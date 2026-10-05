@@ -428,6 +428,8 @@ page("company.html", "100on100 Company",
       <p>Thirty minutes: the risk 100on100 removes, the evidence your engineers can check, and what a pilot on your own data would take.</p></div>
     <div class="card" style="grid-template-rows:auto"><div class="body">
       <h3>100on100</h3>
+      <p><a class="btn primary" href="mailto:100on100@fastbuilder.ai?subject=Briefing%20request">Email us</a></p>
+      <p><strong>100on100@fastbuilder.ai</strong></p>
       <address>400 East View St<br>Columbus, Ohio<br>USA</address>
       <p class="cite">Organisation: <a href="https://github.com/100on100">github.com/100on100</a></p>
     </div></div>
@@ -449,7 +451,7 @@ page("legal.html", "100on100 Legal Notice",
      pagehead("Legal notice", "Legal notice", "Who operates this website.") + """
 <section><div class="wrap prose">
   <p>100on100 is a trade name of FastBuilder.AI.</p>
-  <address>100on100<br>400 East View St<br>Columbus, Ohio<br>USA</address>
+  <address>100on100<br>400 East View St<br>Columbus, Ohio<br>USA<br>100on100@fastbuilder.ai</address>
   <p>The 100on100 software is licensed under the GNU Affero General Public License, version 3.</p>
   <p>Figures on this site are measurements from our test records. They are not warranties.</p>
   <h2 style="font-size:1.2rem;margin-top:12px">Image credits</h2>
