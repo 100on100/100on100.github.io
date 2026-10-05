@@ -117,6 +117,48 @@ def shot(k, alt, caption):
 LOGO = open(os.path.join(HERE, "brand", "wordmark-inline.svg")).read()   # from tools/brand.py
 
 
+
+# ------------------------------------------------------------------ the edge points, in plain words
+PLAIN_POINTS = [
+    ("Every dot is kept",
+     "Like packing crayons so carefully that none ever breaks: when you open the box, every crayon is exactly as it was.",
+     {"defence": "Every pixel the camera captured arrives exactly as it was taken.",
+      "space": "Every value the satellite's sensor recorded reaches the ground unchanged.",
+      "medical": "Every value in a scan is kept, so nothing a clinician might need is thrown away."}),
+    ("A small program you can check",
+     "The program that opens the pictures is short, like a picture book instead of a phone book, so a grown-up can read every page.",
+     {"defence": "At about 92 KiB, your security team can review all of it, not trust a black box.",
+      "space": "About 92 KiB: small enough for a review team to read in full before it goes anywhere near a mission.",
+      "medical": "About 92 KiB: small enough for your security and regulatory reviewers to read in full."}),
+    ("It says no to broken files",
+     "If a picture arrives broken, or someone has tampered with it, the program does not guess. It says \u201cthis one is broken\u201d and gives the reason as a number.",
+     {"defence": "Crafted image files are a known way to attack computers. In our tests, every damaged or hostile file was either read exactly or turned away.",
+      "space": "A file damaged on the way down is flagged, not quietly used as if it were good.",
+      "medical": "A damaged study is refused with a reason, instead of being shown as a picture that looks right but is not."}),
+    ("Same answer on every computer",
+     "Like a sum that gives the same answer on every calculator: it uses whole numbers only, so different machines cannot drift apart.",
+     {"defence": "Measured on laptop, ARM, RISC-V and browser chips: the same picture, so a receiver can prove it got what was sent.",
+      "space": "The flight computer and every ground computer can agree on the exact same image.",
+      "medical": "Two viewers on two different computers show exactly the same pixels."}),
+    ("Open just one piece",
+     "Like opening one page of a book without reading the whole book. The picture is cut into tiles, and you open only the tile you need. If one tile is damaged, the others still open.",
+     {"defence": "Send or decode just the region you care about over a narrow link.",
+      "space": "Pull down only the region of interest from orbit, and lose only a tile, not the frame, if a packet is damaged.",
+      "medical": "Large images can be opened region by region."}),
+]
+
+
+def plain(industry, note=""):
+    cards = "".join(
+        f'<div class="card" style="grid-template-rows:auto"><div class="body"><h3>{t}</h3><p>{kid}</p>'
+        f'<p><strong>For you:</strong> {per[industry]}</p></div></div>' for t, kid, per in PLAIN_POINTS)
+    extra = f'<p class="note">{note}</p>' if note else ""
+    return f"""
+<section class="alt" aria-labelledby="plain-h"><div class="wrap">
+  <div class="head"><p class="label">In plain words</p><h2 id="plain-h">What 100on100 does, simply</h2></div>
+  <div class="cards">{cards}</div>{extra}
+</div></section>"""
+
 # ------------------------------------------------------------------ shared chrome
 NAV = [("defence.html", "Defence"), ("space.html", "Space"), ("medical.html", "Medical devices"), ("products.html", "Products"),
        ("evidence.html", "Evidence"), ("company.html", "Company")]
@@ -257,7 +299,7 @@ page("index.html", "100on100",
 page("defence.html", "100on100 for Defence",
      "Lossless raw sensor imaging for defence research: an auditable decoder, bit-exact on every tested machine, refusing hostile files by number.",
      pagehead("Solutions / Defence", "Keep every raw frame, and prove it arrived intact",
-              "For programme managers and office directors whose systems capture raw sensor data at the edge and must keep it exactly.", "drone-mountain") +
+              "For programme managers and office directors whose systems capture raw sensor data at the edge and must keep it exactly.", "drone-mountain") + plain("defence", "") +
      f"""
 <section aria-labelledby="d-problem"><div class="wrap">
   <div class="cards two">
@@ -297,7 +339,7 @@ page("defence.html", "100on100 for Defence",
 page("space.html", "100on100 for Space",
      "Lossless raw imaging for space and Earth observation: exact samples over narrow downlinks, per-tile checksums, region decode, and one result on every ground machine.",
      pagehead("Solutions / Space", "Every sample from orbit, kept exactly",
-              "For payload and ground-segment leaders at space agencies, satellite makers and Earth-observation operators.", "aerial-tiles") +
+              "For payload and ground-segment leaders at space agencies, satellite makers and Earth-observation operators.", "aerial-tiles") + plain("space", "") +
      f"""
 <section aria-labelledby="s-why"><div class="wrap">
   <div class="cards two">
@@ -335,7 +377,7 @@ page("space.html", "100on100 for Space",
 page("medical.html", "100on100 for Medical Devices",
      "An auditable, refusing image decoder for makers of medical imaging devices and software. In development; greyscale and signed CT values arrive in format version 5.",
      pagehead("Solutions / Medical devices", "The decoder inside your device should refuse, not guess",
-              "For CEOs, CTOs and heads of engineering at makers of imaging devices and imaging software: modalities, PACS and archives.") +
+              "For CEOs, CTOs and heads of engineering at makers of imaging devices and imaging software: modalities, PACS and archives.") + plain("medical", "Greyscale and CT support arrive in format version 5; the points above describe how the format works today.") +
      f"""
 <section aria-labelledby="m-why"><div class="wrap">
   <div class="cards two">
