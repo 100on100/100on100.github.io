@@ -448,6 +448,7 @@ page("legal.html", "100on100 Legal Notice",
      "Who operates this website.",
      pagehead("Legal notice", "Legal notice", "Who operates this website.") + """
 <section><div class="wrap prose">
+  <p>100on100 is a trade name of FastBuilder.AI.</p>
   <address>100on100<br>400 East View St<br>Columbus, Ohio<br>USA</address>
   <p>The 100on100 software is licensed under the GNU Affero General Public License, version 3.</p>
   <p>Figures on this site are measurements from our test records. They are not warranties.</p>
