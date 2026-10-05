@@ -327,7 +327,7 @@ page("space.html", "100on100 for Space",
     <div class="card"><div class="art">{art_sdk()}</div><div class="body"><span class="state prog">In development</span><h3>An encoder for the payload</h3><p>On board, the encoder is what flies. A C99 encoder is next, then an FPGA or RISC-V soft-core encoder with measured power and area.</p></div></div>
     <div class="card"><div class="art">{art_mosaic()}</div><div class="body"><span class="state later">Version 5</span><h3>Beyond colour cameras</h3><p>Single-plane greyscale and infrared, signed samples, and multispectral planes.</p></div></div>
   </div>
-  <p class="note">We have not yet compared 100on100 with the space data-system standards for lossless image compression (CCSDS 121 and CCSDS 123). That comparison, on openly licensed data, is on our roadmap, and we will publish it including wherever the standards do better.</p>
+  <p class="note"><strong>Measured on open Landsat 8, Sentinel-2 and AVIRIS data</strong> (preliminary rates, before tiling): coded band by band, 100on100 is smaller than the CCSDS 121 lossless standard on multispectral data and level on hyperspectral. It is within 4–11% of CCSDS 123 on multispectral data, with a larger gap on hyperspectral, because CCSDS 123 predicts each band from its neighbours. Inter-band prediction is in development.</p>
 </div></section>
 {DEMO}""")
 
