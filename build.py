@@ -159,7 +159,7 @@ def page(fname, title, desc, body):
     <div><h4>Evidence</h4><ul><li><a href="evidence.html">Measurements</a></li><li><a href="evidence.html#compression">Compression</a></li><li><a href="downloads.html">Downloads</a></li></ul></div>
     <div><h4>Company</h4><ul><li><a href="company.html">About</a></li><li><a href="company.html#contact">Contact</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="legal.html">Legal notice</a></li></ul></div>
   </div>
-  <div class="base"><span>© 2026 100on100 · Columbus, Ohio, USA</span><span>Licensed under the GNU AGPL v3 · no cookies, no analytics, nothing loaded from other servers</span></div>
+  <div class="base"><span>© 2026 100on100 LLC · Columbus, Ohio, USA</span><span>Licensed under the GNU AGPL v3 · no cookies, no analytics, nothing loaded from other servers</span></div>
 </div></footer>
 </body>
 </html>
@@ -427,7 +427,7 @@ page("company.html", "100on100 Company",
     <div class="head" style="margin:0"><p class="label">Contact</p><h2 id="contact-h">Request a briefing</h2>
       <p>Thirty minutes: the risk 100on100 removes, the evidence your engineers can check, and what a pilot on your own data would take.</p></div>
     <div class="card" style="grid-template-rows:auto"><div class="body">
-      <h3>100on100</h3>
+      <h3>100on100 LLC</h3>
       <address>400 East View St<br>Columbus, Ohio<br>USA</address>
       <p class="cite">Organisation: <a href="https://github.com/100on100">github.com/100on100</a></p>
     </div></div>
@@ -448,7 +448,7 @@ page("legal.html", "100on100 Legal Notice",
      "Who operates this website.",
      pagehead("Legal notice", "Legal notice", "Who operates this website.") + """
 <section><div class="wrap prose">
-  <address>100on100<br>400 East View St<br>Columbus, Ohio<br>USA</address>
+  <address>100on100 LLC<br>400 East View St<br>Columbus, Ohio<br>USA</address>
   <p>The 100on100 software is licensed under the GNU Affero General Public License, version 3.</p>
   <p>Figures on this site are measurements from our test records. They are not warranties.</p>
   <h2 style="font-size:1.2rem;margin-top:12px">Image credits</h2>
