@@ -81,7 +81,7 @@ def art_archive():
            txt(24, 36, "archive file", 13, 700),
            '<rect x="24" y="50" width="110" height="94" rx="3" style="fill:var(--brand)"/>',
            txt(79, 92, "decoder", 13, 700, "var(--brand-ink)", "middle"),
-           txt(79, 112, "93,152 octets", 11, 600, "var(--brand-ink)", "middle")]
+           txt(79, 112, "93,544 octets", 11, 600, "var(--brand-ink)", "middle")]
     for k in range(6):
         out.append(f'<rect x="148" y="{52 + k * 15}" width="{136 - (k * 13) % 40}" height="9" style="fill:var(--rule)"/>')
     out.append(txt(148, 146, "image data", 11, 600, "var(--ink-soft)"))
@@ -193,7 +193,7 @@ DEMO = f"""<div class="demo"><div class="wrap">
 </div></div>"""
 
 STRIP = """<div class="strip">
-  <div><span class="fig num">93,152</span><p>octets: the entire decoder, for format versions 1 to 4</p></div>
+  <div><span class="fig num">93,544</span><p>octets: the entire decoder, for format versions 1 to 4</p></div>
   <div><span class="fig num">1</span><p>decoded result on x86-64, ARM, RISC-V and WebAssembly for a test stream</p></div>
   <div><span class="fig num">43 / 43</span><p>hard and hostile files decoded exactly or refused by number</p></div>
   <div><span class="fig num">3,442</span><p>files where the C99 decoder matched the reference byte for byte</p></div>
@@ -207,7 +207,7 @@ page("index.html", "100on100",
   <div>
     <p class="label">Lossless imaging · auditable decoder</p>
     <h1 style="margin-top:14px">Every pixel back, exactly, from a decoder small enough to read.</h1>
-    <p class="lead">100on100 stores raw sensor images without losing a bit. Its decoder is one program of 93,152 octets. It gives the same pixels on every machine we have tested, and refuses a damaged or hostile file with a numbered reason instead of guessing.</p>
+    <p class="lead">100on100 stores raw sensor images without losing a bit. Its decoder is one program of 93,544 octets. It gives the same pixels on every machine we have tested, and refuses a damaged or hostile file with a numbered reason instead of guessing.</p>
     <div class="ctas"><a class="btn primary" href="company.html#contact">Request a briefing</a><a class="btn light" href="evidence.html">See the evidence</a></div>
   </div>
   {shot("mosaic-zoom", "Magnified raw sensor samples, each in its red, green or blue filter colour", "What a sensor actually stores: 16 × 24 raw samples, one colour each, magnified. 100on100 keeps every one.")}
@@ -273,7 +273,7 @@ page("defence.html", "100on100 for Defence",
 <section class="alt" aria-labelledby="d-offer"><div class="wrap">
   <div class="head"><p class="label">What you get</p><h2 id="d-offer">What 100on100 gives your programme</h2></div>
   <div class="cards">
-    <div class="card"><div class="art">{art_sdk()}</div><div class="body"><h3>A decoder your team can review</h3><p>93,152 octets for the whole decoder, under a hard cap of 98,304. A plain C99 version for linking matches it byte for byte.</p></div></div>
+    <div class="card"><div class="art">{art_sdk()}</div><div class="body"><h3>A decoder your team can review</h3><p>93,544 octets for the whole decoder, under a hard cap of 98,304. A plain C99 version for linking matches it byte for byte.</p></div></div>
     <div class="card"><div class="art">{art_refuse()}</div><div class="body"><h3>Hostile files turned away</h3><p>A damaged or crafted file is refused with a numbered reason. In our tests, none became a plausible wrong picture.</p></div></div>
     <div class="card"><div class="art">{art_hashes()}</div><div class="body"><h3>One result on every machine</h3><p>Integer-only decoding. A test stream gives one result on x86-64, ARM, RISC-V and WebAssembly, so a receiver can prove what it decoded.</p></div></div>
     <div class="card">{img_art("aerial-tiles", "Aerial frame with its tile grid, one tile highlighted")}<div class="body"><h3>Region decode</h3><p>256 × 256 tiles. Decode only the region you need, or spread one frame across machines with identical results.</p></div></div>
@@ -354,7 +354,7 @@ page("products.html", "100on100 Products",
   <div class="head"><p class="label">The format</p><h2 id="fmt-h">What is in the box today</h2></div>
   <div class="cards">
     <div class="card">{img_art("aerial-tiles", "Aerial frame with its tile grid")}<div class="body"><span class="state ready">Ready</span><h3>Format version 4</h3><p>256 × 256 tiles, a header checksum, a declared bit depth up to 16, and a checksum on every tile.</p></div></div>
-    <div class="card"><div class="art">{art_refuse()}</div><div class="body"><span class="state ready">Ready</span><h3>The decoder</h3><p>93,152 octets, reading versions 1 to 4, under a hard cap of 98,304 octets.</p></div></div>
+    <div class="card"><div class="art">{art_refuse()}</div><div class="body"><span class="state ready">Ready</span><h3>The decoder</h3><p>93,544 octets, reading versions 1 to 4, under a hard cap of 98,304 octets.</p></div></div>
     <div class="card"><div class="art">{art_sdk()}</div><div class="body"><span class="state ready">Ready</span><h3>The C99 decoder</h3><p>No dependencies. Byte-identical to the reference on 3,442 of 3,442 files and mutants.</p></div></div>
   </div>
 </div></section>
