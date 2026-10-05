@@ -214,14 +214,14 @@ page("index.html", "100on100",
 </div></div>
 <div class="callouts">
   <a class="callout" href="defence.html"><span class="label">Defence</span><h3>Keep every raw frame, and prove it arrived intact</h3><p>Lossless sensor data over narrow links, decoded identically anywhere.</p><span class="more">More →</span></a>
-  <a class="callout" href="medical.html"><span class="label">Medical devices</span><h3>A decoder that refuses, not guesses</h3><p>Malformed studies turned away with a reason, never shown wrong.</p><span class="more">More →</span></a>
+  <a class="callout" href="medical.html"><span class="label">Medical devices</span><h3>A decoder that refuses, not guesses</h3><p>Malformed files turned away with a numbered reason.</p><span class="more">More →</span></a>
   <a class="callout" href="evidence.html"><span class="label">Evidence</span><h3>Measured, not claimed</h3><p>Every figure with the section that records it, and our losses too.</p><span class="more">More →</span></a>
 </div>
 
 <div class="wrap statement">
   <p class="label">100on100</p>
   <h2>We make every image provable</h2>
-  <p>An image is worth keeping only if you can trust what comes back out. 100on100 is a lossless image format and a decoder small enough for your own team to review. Decoding uses integers only, so every machine gives the same answer, and a damaged file is refused by number, never shown as a plausible wrong picture.</p>
+  <p>An image is worth keeping only if you can trust what comes back out. 100on100 is a lossless image format and a decoder small enough for your own team to review. Decoding uses integers only, so there is no floating-point rounding for machines to disagree on. In our test sets, every damaged or hostile file was either decoded exactly or refused by number.</p>
 </div>
 
 <section aria-labelledby="corpus-h"><div class="wrap feature">
@@ -274,7 +274,7 @@ page("defence.html", "100on100 for Defence",
   <div class="head"><p class="label">What you get</p><h2 id="d-offer">What 100on100 gives your programme</h2></div>
   <div class="cards">
     <div class="card"><div class="art">{art_sdk()}</div><div class="body"><h3>A decoder your team can review</h3><p>92,960 octets for the whole decoder, under a hard cap of 98,304. A plain C99 version for linking matches it byte for byte.</p></div></div>
-    <div class="card"><div class="art">{art_refuse()}</div><div class="body"><h3>Hostile files turned away</h3><p>A damaged or crafted file is refused with a numbered reason. It never becomes a plausible wrong picture.</p></div></div>
+    <div class="card"><div class="art">{art_refuse()}</div><div class="body"><h3>Hostile files turned away</h3><p>A damaged or crafted file is refused with a numbered reason. In our tests, none became a plausible wrong picture.</p></div></div>
     <div class="card"><div class="art">{art_hashes()}</div><div class="body"><h3>One result on every machine</h3><p>Integer-only decoding. A test stream gives one result on x86-64, ARM, RISC-V and WebAssembly, so a receiver can prove what it decoded.</p></div></div>
     <div class="card">{img_art("aerial-tiles", "Aerial frame with its tile grid, one tile highlighted")}<div class="body"><h3>Region decode</h3><p>256 × 256 tiles. Decode only the region you need, or spread one frame across machines with identical results.</p></div></div>
     <div class="card"><div class="art">{art_archive()}</div><div class="body"><h3>Built to outlast</h3><p>Planned: archive files that carry their own decoder.</p></div></div>
