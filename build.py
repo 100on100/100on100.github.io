@@ -114,6 +114,9 @@ def shot(k, alt, caption):
     return f'<figure class="shot"><img src="img/{k}.jpg" alt="{alt}" loading="lazy"><figcaption>{caption} <span class="credit">{credit(k)}</span></figcaption></figure>'
 
 
+LOGO = open(os.path.join(HERE, "brand", "wordmark-inline.svg")).read()   # from tools/brand.py
+
+
 # ------------------------------------------------------------------ shared chrome
 NAV = [("defence.html", "Defence"), ("medical.html", "Medical devices"), ("products.html", "Products"),
        ("evidence.html", "Evidence"), ("company.html", "Company")]
@@ -129,6 +132,9 @@ def page(fname, title, desc, body):
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <link rel="stylesheet" href="site.css">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 </head>
 <body>
 <div class="util"><div class="wrap">
@@ -136,7 +142,7 @@ def page(fname, title, desc, body):
 </div></div>
 <div class="mast-bg"><div class="wrap">
   <header class="mast">
-    <a class="mark" href="index.html" aria-label="100on100 home">100<b>on</b>100<small>Lossless imaging you can audit</small></a>
+    <a class="mark" href="index.html" aria-label="100on100 home">{LOGO}<small>Lossless imaging you can audit</small></a>
     <nav aria-label="Main">
       {nav}
       <a class="btn primary" href="company.html#contact">Request a briefing</a>
