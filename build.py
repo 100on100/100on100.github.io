@@ -159,7 +159,7 @@ def page(fname, title, desc, body):
     <div><h4>Evidence</h4><ul><li><a href="evidence.html">Measurements</a></li><li><a href="evidence.html#compression">Compression</a></li><li><a href="downloads.html">Downloads</a></li></ul></div>
     <div><h4>Company</h4><ul><li><a href="company.html">About</a></li><li><a href="company.html#contact">Contact</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="legal.html">Legal notice</a></li></ul></div>
   </div>
-  <div class="base"><span>© 2026 100on100 · Columbus, Ohio, USA</span><span>Licensed under the GNU AGPL v3 · no cookies, no analytics, nothing loaded from other servers</span></div>
+  <div class="base"><span>© 2026 100on100 · Columbus, Ohio, USA</span><span>Binaries free for evaluation; production use licensed · no cookies, no analytics, nothing loaded from other servers</span></div>
 </div></footer>
 </body>
 </html>
@@ -279,7 +279,7 @@ page("defence.html", "100on100 for Defence",
     <div class="card"><div class="art">{art_hashes()}</div><div class="body"><h3>One result on every machine</h3><p>Integer-only decoding. A test stream gives one result on x86-64, ARM, RISC-V and WebAssembly, so a receiver can prove what it decoded.</p></div></div>
     <div class="card">{img_art("aerial-tiles", "Aerial frame with its tile grid, one tile highlighted")}<div class="body"><h3>Region decode</h3><p>256 × 256 tiles. Decode only the region you need, or spread one frame across machines with identical results.</p></div></div>
     <div class="card"><div class="art">{art_archive()}</div><div class="body"><h3>Built to outlast</h3><p>Planned: archive files that carry their own decoder.</p></div></div>
-    <div class="card">{img_art("mosaic-zoom", "Magnified raw sensor samples")}<div class="body"><h3>Open to inspection</h3><p>Licensed under the AGPL v3. Your evaluators review the same code that ships.</p></div></div>
+    <div class="card">{img_art("mosaic-zoom", "Magnified raw sensor samples")}<div class="body"><h3>Open to inspection</h3><p>The decoder is small enough to read in full, and its source is available to your evaluators for review.</p></div></div>
   </div>
 </div></section>
 
@@ -458,7 +458,7 @@ page("company.html", "100on100 Company",
   <div class="cards">
     <div class="card"><div class="art">{art_hashes()}</div><div class="body"><h3>Measured before stated</h3><p>No figure goes on this site without the measurement and the section that records it.</p></div></div>
     <div class="card"><div class="art">{art_tiles()}</div><div class="body"><h3>Losses published</h3><p>When another codec is smaller or faster, the table says so.</p></div></div>
-    <div class="card"><div class="art">{art_sdk()}</div><div class="body"><h3>Open to inspection</h3><p>Licensed under the GNU Affero General Public License v3. Evaluators review the same code that ships.</p></div></div>
+    <div class="card"><div class="art">{art_sdk()}</div><div class="body"><h3>Open to inspection</h3><p>Binaries are free for evaluation and licensed for production. The decoder's source is available to evaluators for review.</p></div></div>
   </div>
 </div></section>
 
@@ -492,7 +492,7 @@ page("legal.html", "100on100 Legal Notice",
 <section><div class="wrap prose">
   <p>100on100 is a trade name of FastBuilder.AI.</p>
   <address>100on100<br>400 East View St<br>Columbus, Ohio<br>USA<br>100on100@fastbuilder.ai</address>
-  <p>The 100on100 software is licensed under the GNU Affero General Public License, version 3.</p>
+  <p>The 100on100 software is distributed as compiled binaries under the 100on100 licence: free for evaluation, licensed for production use.</p>
   <p>Figures on this site are measurements from our test records. They are not warranties.</p>
   <h2 style="font-size:1.2rem;margin-top:12px">Image credits</h2>
   <p>Every photograph on this site is rendered by us from a raw camera file published at raw.pixls.us under CC0 (public domain dedication). Cameras: Yuneec CGO3, FIMI X8SE, Autel Robotics XB015, Leaf AFi-II 12, Google Pixel 2 XL, Nikon 1 AW1, OnePlus A3003, and the 65-camera contact sheet. The diagrams are our own.</p>
