@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>100on100 Evidence</title>
+<meta name="description" content="The measurements behind 100on100: decoder size, cross-machine result, hostile-file handling, the C99 decoder gate, refusal codes and compression.">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<div class="util"><div class="wrap">
+  <a href="downloads.html">Downloads</a><a href="services.html">Services</a><a href="company.html#contact">Contact</a>
+</div></div>
+<div class="mast-bg"><div class="wrap">
+  <header class="mast">
+    <a class="mark" href="index.html" aria-label="100on100 home">100<b>on</b>100<small>Lossless imaging you can audit</small></a>
+    <nav aria-label="Main">
+      <a href="defence.html">Defence</a>
+      <a href="medical.html">Medical devices</a>
+      <a href="products.html">Products</a>
+      <a href="evidence.html" aria-current="page">Evidence</a>
+      <a href="company.html">Company</a>
+      <a class="btn primary" href="company.html#contact">Request a briefing</a>
+    </nav>
+  </header>
+</div></div>
+<main>
+<div class="pagehead"><div class="wrap">
+  <p class="crumbs"><a href="index.html">Home</a> / Evidence</p>
+  <h1>Four claims, each with its measurement</h1>
+  <p>Every figure comes from our own test records, which your engineers can review under NDA. Where another codec does better, we say so.</p>
+</div></div>
+<section aria-label="Claims"><div class="wrap"><div class="ledger">
+    <div class="row">
+      <div class="fig num">92,960<small>octets</small></div>
+      <p>The whole decoder. It reads format versions 1 to 4, including tiles and the header checksum, and stays under a hard cap of 98,304 octets.</p>
+      <span class="cite">100on100 test record</span>
+    </div>
+    <div class="row">
+      <div class="fig num">1<small>decoded hash, four instruction sets</small></div>
+      <p>One test stream decodes to the same hash on x86-64, ARM (aarch64), RISC-V and WebAssembly. Integer arithmetic only, so machines cannot disagree in the last bit. The full decoder’s WebAssembly run is in progress.</p>
+      <span class="cite">100on100 test record</span>
+    </div>
+    <div class="row">
+      <div class="fig num">43 / 43<small>hard and hostile files handled exactly</small></div>
+      <p>A constructed set of extreme and damaged files. Each one either decodes to exactly the original or is refused with its exact numbered reason, identically on x86-64 and on ARM. None decodes into a plausible wrong picture.</p>
+      <span class="cite">100on100 test record</span>
+    </div>
+    <div class="row">
+      <div class="fig num">3,442 / 3,442<small>files byte-identical</small></div>
+      <p>A plain C99 decoder, for linking into your product, gives the same output octet for octet as the reference decoder on every file and every mutant tested. It decodes a 12.13-megapixel frame in 0.61 seconds.</p>
+      <span class="cite">100on100 test record</span>
+    </div>
+  </div>
+</div></section>
+<div id="compression"><div class="wrap"><section aria-labelledby="size-h">
+  <div class="head">
+    <p class="label">Compression</p>
+    <h2 id="size-h">Competitive size, stated plainly.</h2>
+    <p>On 67 raw camera sensors, 100on100 is smaller than JPEG-LS and FFV1, and slightly larger than JPEG XL. We publish all three.</p>
+  </div>
+  <div class="tablewrap">
+    <table class="data">
+      <thead><tr><th>Against</th><th>Pooled</th><th>Median sensor</th><th>Sensors where 100on100 is smaller</th></tr></thead>
+      <tbody>
+        <tr><td>JPEG-LS</td><td class="n">−10.01%</td><td class="n">−1.29%</td><td class="n">49 of 67</td></tr>
+        <tr><td>FFV1</td><td class="n">−4.81%</td><td class="n">−2.85%</td><td class="n">58 of 67</td></tr>
+        <tr><td>JPEG XL</td><td class="n">+0.82%</td><td class="n">+0.93%</td><td class="n">19 of 67</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">Negative means 100on100 files are smaller. Every file was decoded back and compared bit for bit. Corpus: one raw file per camera model from raw.pixls.us (CC0), 1.22 billion samples. Medical-image results will be published after review.</p>
+</section>
+  <div style="padding-bottom:64px"><figure class="shot"><img src="img/cameras-sheet.jpg" alt="Thumbnails of 65 raw camera frames" loading="lazy"><figcaption>The corpus: 65 of the 67 raw frames, one per camera model. <span class="credit">Raw frame: 65 cameras, raw.pixls.us (CC0)</span></figcaption></figure></div></div></div>
+<section class="alt" aria-labelledby="src-h"><div class="wrap">
+  <div class="head"><h2 id="src-h">Sources</h2></div>
+  <ol class="steps cite">
+    <li>100on100 test records: decoder size, cross-architecture results, hostile-file set, C99 decoder gate, compression. Available to evaluators under NDA.</li>
+    <li>Camera corpus: raw.pixls.us, one raw file per camera model, CC0.</li>
+    <li>CISA Known Exploited Vulnerabilities catalog (version 2026.10.04): CVE-2023-4863, CVE-2025-43300.</li>
+    <li>Google Chrome Releases, “Stable Channel Update for Desktop”, 2023-09-11 (CVE-2023-4863).</li>
+    <li>Apple, “About the security content of iOS 18.6.2 and iPadOS 18.6.2”, 2025-08-20 (CVE-2025-43300).</li>
+    <li>Quarkslab, “Reverse engineering of Apple’s iOS 0-click CVE-2025-43300”, 2025-09-04.</li>
+  </ol>
+</div></section>
+</main>
+<footer><div class="wrap">
+  <div class="cols">
+    <div><h4>Solutions</h4><ul><li><a href="defence.html">Defence and edge sensing</a></li><li><a href="medical.html">Medical devices</a></li><li><a href="products.html#archive">Long-term archives</a></li></ul></div>
+    <div><h4>Products</h4><ul><li><a href="products.html#sdk">100on100 SDK</a></li><li><a href="products.html#attest">100on100 Attest</a></li><li><a href="products.html#archive">100on100 Archive</a></li><li><a href="services.html">Services</a></li></ul></div>
+    <div><h4>Evidence</h4><ul><li><a href="evidence.html">Measurements</a></li><li><a href="evidence.html#compression">Compression</a></li><li><a href="downloads.html">Downloads</a></li></ul></div>
+    <div><h4>Company</h4><ul><li><a href="company.html">About</a></li><li><a href="company.html#contact">Contact</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="legal.html">Legal notice</a></li></ul></div>
+  </div>
+  <div class="base"><span>© 2026 100on100 · Columbus, Ohio, USA</span><span>Licensed under the GNU AGPL v3 · no cookies, no analytics, nothing loaded from other servers</span></div>
+</div></footer>
+</body>
+</html>

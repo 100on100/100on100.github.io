@@ -1,0 +1,22 @@
+<div class="ledger">
+    <div class="row">
+      <div class="fig num">92,960<small>octets</small></div>
+      <p>The whole decoder. It reads format versions 1 to 4, including tiles and the header checksum, and stays under a hard cap of 98,304 octets.</p>
+      <span class="cite">100on100 test record</span>
+    </div>
+    <div class="row">
+      <div class="fig num">1<small>decoded hash, four instruction sets</small></div>
+      <p>One test stream decodes to the same hash on x86-64, ARM (aarch64), RISC-V and WebAssembly. Integer arithmetic only, so machines cannot disagree in the last bit. The full decoder’s WebAssembly run is in progress.</p>
+      <span class="cite">100on100 test record</span>
+    </div>
+    <div class="row">
+      <div class="fig num">43 / 43<small>hard and hostile files handled exactly</small></div>
+      <p>A constructed set of extreme and damaged files. Each one either decodes to exactly the original or is refused with its exact numbered reason, identically on x86-64 and on ARM. None decodes into a plausible wrong picture.</p>
+      <span class="cite">100on100 test record</span>
+    </div>
+    <div class="row">
+      <div class="fig num">3,442 / 3,442<small>files byte-identical</small></div>
+      <p>A plain C99 decoder, for linking into your product, gives the same output octet for octet as the reference decoder on every file and every mutant tested. It decodes a 12.13-megapixel frame in 0.61 seconds.</p>
+      <span class="cite">100on100 test record</span>
+    </div>
+  </div>
