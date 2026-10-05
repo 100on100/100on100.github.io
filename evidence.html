@@ -29,11 +29,27 @@
   </header>
 </div></div>
 <main>
-<div class="pagehead"><div class="wrap">
+<div class="pagehead photo" style="--img:url(img/banner-evidence.jpg)"><div class="wrap">
   <p class="crumbs"><a href="index.html">Home</a> / Evidence</p>
   <h1>Four claims, each with its measurement</h1>
   <p>Every figure comes from our own test records, which your engineers can review under NDA. Where another codec does better, we say so.</p>
+  <p class="credit">Raw frame: Hasselblad Lunar, raw.pixls.us (CC0)</p>
 </div></div>
+<section aria-labelledby="see-h"><div class="wrap">
+  <div class="head"><p class="label">See it for yourself</p><h2 id="see-h">A real round trip: 24 million samples in, the same 24 million out</h2>
+    <p>We took one raw camera frame, compressed it with our encoder, decoded it with our decoder, and compared the result with the original, sample by sample. Not one of the 24,064,000 samples changed. That is what lossless means here: not "looks the same", but is the same.</p></div>
+  <figure class="shot"><img src="img/proof-roundtrip.jpg" alt="Source raw frame, decoded frame, and a black difference panel reading 0 of 24,064,000 samples differ" loading="lazy"><figcaption>A real run (5 October 2026), using the C99 encoder and decoder, compared sample by sample: 0 differ. The previews are rendered from the raw samples for display. <span class="credit">Raw frame: Hasselblad Lunar, raw.pixls.us (CC0)</span></figcaption></figure>
+</div></section>
+
+<section class="alt" aria-labelledby="dmg-h"><div class="wrap">
+  <div>
+    <div><div class="head"><p class="label">How damage is handled</p><h2 id="dmg-h">A broken tile is refused; the rest still opens</h2>
+      <p>Every 256 × 256 tile carries its own checksum. A tile that does not match is refused with a numbered reason, never drawn as a plausible wrong picture, and the other tiles still decode on their own. A region can be opened without decoding the rest of the frame.</p>
+      <p class="note">The picture is an illustration of the behaviour. The measurements behind it are listed below.</p></div>
+    <div style="margin-top:20px"><figure class="shot"><img src="img/explain-damage.jpg" alt="A railway landscape with a tile grid, one region outlined in blue and one tile marked in red as refused" loading="lazy"><figcaption>Illustration: a region decoded on its own (blue) and a damaged tile refused (red). <span class="credit">Raw frame: Nokia Lumia 930, raw.pixls.us (CC0)</span></figcaption></figure></div>
+  </div>
+</div></section>
+
 <section aria-label="Claims"><div class="wrap"><div class="ledger">
     <div class="row">
       <div class="fig num">94,336<small>octets</small></div>

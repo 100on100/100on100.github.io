@@ -99,11 +99,79 @@ def art_sdk():
     return svg(320, 166, "".join(out), "Illustration of a decode SDK call sequence")
 
 
+# ------------------------------------------------------------------ operational scenes: where the decoder sits in a real flow
+S = "fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round"
+
+
+def icon(kind, x, y):
+    """Small line icons, drawn around (x, y), about 56 px across."""
+    g = {
+        "drone": f'<path d="M{x-22} {y-10}h16M{x+6} {y-10}h16M{x-14} {y-10}v6M{x+14} {y-10}v6" style="{S}"/>'
+                 f'<rect x="{x-16}" y="{y-4}" width="32" height="14" rx="4" style="{S}"/><circle cx="{x}" cy="{y+16}" r="5" style="{S}"/>',
+        "sat": f'<rect x="{x-8}" y="{y-10}" width="16" height="20" rx="2" style="{S}"/>'
+               f'<path d="M{x-8} {y}h-6M{x+8} {y}h6" style="{S}"/><rect x="{x-34}" y="{y-9}" width="20" height="18" style="{S}"/>'
+               f'<rect x="{x+14}" y="{y-9}" width="20" height="18" style="{S}"/><path d="M{x} {y+10}v8" style="{S}"/>',
+        "scanner": f'<circle cx="{x}" cy="{y-2}" r="20" style="{S}"/><circle cx="{x}" cy="{y-2}" r="9" style="{S}"/>'
+                   f'<path d="M{x-28} {y+18}h56" style="{S}"/>',
+        "dish": f'<path d="M{x-18} {y-14}a24 24 0 0 0 30 22z" style="{S}"/><path d="M{x+1} {y-4}l10 -10M{x-2} {y+8}v12M{x-14} {y+20}h24" style="{S}"/>',
+        "rack": f'<rect x="{x-18}" y="{y-20}" width="36" height="40" rx="3" style="{S}"/>'
+                f'<path d="M{x-11} {y-10}h22M{x-11} {y}h22M{x-11} {y+10}h22" style="{S}"/>',
+        "screens": f'<rect x="{x-30}" y="{y-16}" width="26" height="20" rx="2" style="{S}"/><rect x="{x+4}" y="{y-16}" width="26" height="20" rx="2" style="{S}"/>'
+                   f'<path d="M{x-17} {y+4}v8M{x+17} {y+4}v8M{x-24} {y+12}h14M{x+10} {y+12}h14" style="{S}"/>',
+    }[kind]
+    return g
+
+
+def art_ops(steps, link, foot, label):
+    """steps: three (icon, title, line1, line2, accent) stations; link: the label on the first hop."""
+    W, out = 660, []
+    xs = [90, 330, 570]
+    for k, (ic, title, l1, l2, acc) in enumerate(steps):
+        x = xs[k]
+        out.append(f'<rect x="{x-80}" y="24" width="160" height="172" rx="6" style="fill:var(--ground);stroke:{acc};stroke-width:{2.5 if acc != "var(--rule)" else 1.5}"/>')
+        out.append(icon(ic, x, 74))
+        out.append(txt(x, 128, title, 14, 800, "var(--ink)", "middle", False))
+        out.append(txt(x, 152, l1, 12, 500, "var(--ink-soft)", "middle", False))
+        out.append(txt(x, 170, l2, 12, 500, "var(--ink-soft)", "middle", False))
+    for k in range(2):                                        # the hops between stations
+        a, b = xs[k] + 84, xs[k + 1] - 84
+        dash = ' stroke-dasharray="7 6"' if k == 0 else ""
+        out.append(f'<path d="M{a} 110H{b - 8}" style="fill:none;stroke:var(--signal);stroke-width:3"{dash}/>'
+                   f'<path d="M{b - 12} 102l10 8l-10 8" style="fill:none;stroke:var(--signal);stroke-width:3"/>')
+    out.append(txt((xs[0] + xs[1]) // 2, 98, link, 11, 700, "var(--signal)", "middle"))
+    out.append(txt(W // 2, 226, foot, 12, 600, "var(--ink-soft)", "middle", False))
+    return svg(W, 236, "".join(out), label)
+
+
+OPS_FIELD = art_ops([("drone", "At the edge", "camera keeps the raw", "frame, tile by tile", "var(--rule)"),
+                     ("dish", "Ground station", "decodes the region", "it needs first", "var(--signal)"),
+                     ("rack", "Analysis", "the same pixels on", "every tested machine", "var(--rule)")],
+                    "narrow link", "A tile damaged on the link is refused by number; the rest of the frame still decodes.",
+                    "Field flow: edge camera, narrow link, ground station decoding a region, analysis machines")
+OPS_SPACE = art_ops([("sat", "On orbit", "raw samples, tiled,", "each with a checksum", "var(--rule)"),
+                     ("dish", "Downlink", "tiles arrive; a bad", "one is set aside", "var(--signal)"),
+                     ("rack", "Ground segment", "one result on every", "tested machine", "var(--rule)")],
+                    "downlink", "Region of interest first; the full frame when the pass allows. Encoder for the payload in development.",
+                    "Space flow: satellite, downlink, ground segment machines")
+OPS_MED = art_ops([("scanner", "Modality", "writes the study", "losslessly", "var(--rule)"),
+                   ("rack", "Archive", "keeps it for decades,", "decoder alongside", "var(--rule)"),
+                   ("screens", "Viewers", "the same pixels, or", "a numbered refusal", "var(--refuse)")],
+                  "hospital network", "Planned for medical images with format version 5 (greyscale and signed CT values).",
+                  "Medical flow: modality, archive, viewers showing identical pixels or a numbered refusal")
+
+
 def credit(k):
+    if k in CREDIT_TEXT:
+        return CREDIT_TEXT[k]
     return f"Raw frame: {CREDIT[k]}, raw.pixls.us (CC0)"
 
 
-CREDIT = {'hero-aerial': 'Yuneec CGO3 drone', 'aerial-tiles': 'FIMI X8SE drone', 'drone-mountain': 'Autel Robotics XB015 drone', 'field-vehicle': 'Leaf AFi-II 12', 'city': 'Google Pixel 2 XL', 'bridge': 'Nikon 1 AW1', 'desert': 'OnePlus A3003', 'mosaic-zoom': 'FIMI X8SE drone', 'cameras-sheet': '65 cameras'}
+PHANTOM = "Generated Shepp–Logan test phantom: no patient data"
+CREDIT_TEXT = {'banner-medical': PHANTOM, 'med-tiles': PHANTOM + "; an illustration"}
+
+
+CREDIT = {'banner-products': 'LG D855 phone', 'banner-evidence': 'Hasselblad Lunar', 'proof-roundtrip': 'Hasselblad Lunar',
+          'explain-zoom': 'Canon PowerShot A570 IS', 'explain-damage': 'Nokia Lumia 930', 'hero-aerial': 'Yuneec CGO3 drone', 'aerial-tiles': 'FIMI X8SE drone', 'drone-mountain': 'Autel Robotics XB015 drone', 'field-vehicle': 'Leaf AFi-II 12', 'city': 'Google Pixel 2 XL', 'bridge': 'Nikon 1 AW1', 'desert': 'OnePlus A3003', 'mosaic-zoom': 'FIMI X8SE drone', 'cameras-sheet': '65 cameras'}
 
 
 def img_art(k, alt):
@@ -383,9 +451,26 @@ page("space.html", "100on100 for Space",
 page("medical.html", "100on100 for Medical Devices",
      "An auditable, refusing image decoder for makers of medical imaging devices and software. In development; greyscale and signed CT values arrive in format version 5.",
      pagehead("Solutions / Medical devices", "The decoder inside your device should refuse, not guess",
-              "For CEOs, CTOs and heads of engineering at makers of imaging devices and imaging software: modalities, PACS and archives.") + plain("medical", "Greyscale and CT support arrive in format version 5; the points above describe how the format works today.") +
+              "For CEOs, CTOs and heads of engineering at makers of imaging devices and imaging software: modalities, PACS and archives.", "banner-medical") + plain("medical", "Greyscale and CT support arrive in format version 5; the points above describe how the format works today.") +
      f"""
-<section aria-labelledby="m-why"><div class="wrap">
+<section aria-labelledby="m-see"><div class="wrap">
+  <div class="head"><p class="label">How it would work in your product</p><h2 id="m-see">One study, cut into tiles, each one checked</h2>
+    <p>A study is stored in 256 × 256 tiles, each with its own checksum. A viewer can open just the region a clinician is looking at. If a tile is damaged in storage or on the network, that tile is refused with a numbered reason and is never drawn as a picture that looks right but is not.</p></div>
+  <div class="cards two">
+    {shot("med-tiles", "A CT test phantom divided into 16 tiles, one tile marked as refused", "Illustration on a generated CT test phantom: one damaged tile refused, the other fifteen still open.")}
+    <div>
+      <ul class="steps">
+        <li><strong>Exact:</strong> the viewer shows the values the scanner wrote, not an approximation.</li>
+        <li><strong>The same everywhere:</strong> whole-number decoding leaves no rounding for two workstations to disagree on.</li>
+        <li><strong>Honest about damage:</strong> a broken tile is a refusal with a number your service team can look up.</li>
+      </ul>
+      <p class="note">Medical images (greyscale and signed CT values) are planned for format version 5. The phantom is generated; no patient data appears on this site.</p>
+    </div>
+  </div>
+  <figure class="ops" style="margin-top:28px">{OPS_MED}<figcaption>Where the decoder sits: from the modality, through the archive, to every viewer.</figcaption></figure>
+</div></section>
+
+<section class="alt" aria-labelledby="m-why"><div class="wrap">
   <div class="cards two">
     <div><div class="head"><p class="label">Why it matters</p><h2 id="m-why">In a regulated product, a wrong image is worse than none</h2></div>
       <ul class="steps">
@@ -398,7 +483,7 @@ page("medical.html", "100on100 for Medical Devices",
   </div>
 </div></section>
 
-<section class="alt" aria-labelledby="m-status"><div class="wrap">
+<section aria-labelledby="m-status"><div class="wrap">
   <div class="head"><p class="label">Roadmap</p><h2 id="m-status">Where it stands</h2><p>The decoder, its refusal codes and its C99 version are ready today. Medical images need two more things, both scheduled for format version 5.</p></div>
   <div class="cards">
     <div class="card"><div class="art">{art_hashes()}</div><div class="body"><span class="state ready">Ready</span><h3>Refusal and exactness</h3><p>Damaged files refused by number; one result across machines; byte-identical C99 decoder.</p></div></div>
@@ -421,7 +506,7 @@ def product(pid, name, state, art, rows):
 page("products.html", "100on100 Products",
      "The 100on100 product line: the decode SDK, decode attestation, and the self-decoding archive.",
      pagehead("Products", "One format, one decoder, three ways to use it",
-              "Every product wraps the same decoder, so there is one implementation of the codec to audit, not one per product.") +
+              "Every product wraps the same decoder, so there is one implementation of the codec to audit, not one per product.", "banner-products") +
      f"""
 <section aria-label="Product line"><div class="wrap">
   {product("sdk", "SDK", "In progress", art_sdk(), [
@@ -435,6 +520,22 @@ page("products.html", "100on100 Products",
   {product("archive", "Archive", "Planned", art_archive(), [
       ("What", "Self-decoding files: each archive carries the decoder that reads it."),
       ("For", "Records that must outlive the software that wrote them: medical, defence, legal.")])}
+</div></section>
+
+<section class="alt" aria-labelledby="keep-h"><div class="wrap">
+  <div class="head"><p class="label">What we keep</p><h2 id="keep-h">The sensor's own samples, not a processed picture</h2>
+    <p>A camera does not see colour pictures. Each site on its sensor records one number through a red, green or blue filter. Most formats throw that away and keep a processed picture. 100on100 keeps the numbers themselves, every one of them, so any later processing starts from what the sensor actually recorded.</p></div>
+  {shot("explain-zoom", "A tram photo, a close-up of its headlamp, and the raw red, green and blue sensor samples at that spot", "From the whole frame to the samples the sensor stored: each square is one number, shown in its filter colour.")}
+</div></section>
+
+<section aria-labelledby="ops-h"><div class="wrap">
+  <div class="head"><p class="label">In operation</p><h2 id="ops-h">Where the decoder sits in a real system</h2>
+    <p>The same small decoder runs at every step that opens an image, so every step can check what it received.</p></div>
+  <div class="opsrow">
+    <figure class="ops">{OPS_FIELD}<figcaption><strong>Defence and edge sensing.</strong> Keep every raw frame at the edge, send what the link allows, and decode the region an analyst needs first.</figcaption></figure>
+    <figure class="ops">{OPS_SPACE}<figcaption><strong>Space and Earth observation.</strong> Tiles with their own checksums come down the link; a damaged tile is set aside instead of being used as good data.</figcaption></figure>
+    <figure class="ops">{OPS_MED}<figcaption><strong>Medical devices.</strong> From scanner to archive to every viewer, one decoder and one answer, or a numbered refusal. Planned with format version 5.</figcaption></figure>
+  </div>
 </div></section>
 
 <section class="alt" aria-labelledby="fmt-h"><div class="wrap">
@@ -451,8 +552,23 @@ page("products.html", "100on100 Products",
 page("evidence.html", "100on100 Evidence",
      "The measurements behind 100on100: decoder size, cross-machine result, hostile-file handling, the C99 decoder gate, refusal codes and compression.",
      pagehead("Evidence", "Four claims, each with its measurement",
-              "Every figure comes from our own test records, which your engineers can review under NDA. Where another codec does better, we say so.") +
+              "Every figure comes from our own test records, which your engineers can review under NDA. Where another codec does better, we say so.", "banner-evidence") +
      f"""
+<section aria-labelledby="see-h"><div class="wrap">
+  <div class="head"><p class="label">See it for yourself</p><h2 id="see-h">A real round trip: 24 million samples in, the same 24 million out</h2>
+    <p>We took one raw camera frame, compressed it with our encoder, decoded it with our decoder, and compared the result with the original, sample by sample. Not one of the 24,064,000 samples changed. That is what lossless means here: not "looks the same", but is the same.</p></div>
+  {shot("proof-roundtrip", "Source raw frame, decoded frame, and a black difference panel reading 0 of 24,064,000 samples differ", "A real run (5 October 2026), using the C99 encoder and decoder, compared sample by sample: 0 differ. The previews are rendered from the raw samples for display.")}
+</div></section>
+
+<section class="alt" aria-labelledby="dmg-h"><div class="wrap">
+  <div>
+    <div><div class="head"><p class="label">How damage is handled</p><h2 id="dmg-h">A broken tile is refused; the rest still opens</h2>
+      <p>Every 256 × 256 tile carries its own checksum. A tile that does not match is refused with a numbered reason, never drawn as a plausible wrong picture, and the other tiles still decode on their own. A region can be opened without decoding the rest of the frame.</p>
+      <p class="note">The picture is an illustration of the behaviour. The measurements behind it are listed below.</p></div>
+    <div style="margin-top:20px">{shot("explain-damage", "A railway landscape with a tile grid, one region outlined in blue and one tile marked in red as refused", "Illustration: a region decoded on its own (blue) and a damaged tile refused (red).")}</div>
+  </div>
+</div></section>
+
 <section aria-label="Claims"><div class="wrap">{part("ledger.html")}</div></section>
 <div id="compression"><div class="wrap">{part("size.html")}
   <div style="padding-bottom:64px">{shot("cameras-sheet", "Thumbnails of 65 raw camera frames", "The corpus: 65 of the 67 raw frames, one per camera model.")}</div></div></div>

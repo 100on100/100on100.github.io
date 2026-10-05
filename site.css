@@ -208,3 +208,10 @@ figure.shot figcaption { font-size: 0.88rem; color: var(--ink-soft); }
 /* ---- logo: pixel zeros (tools/brand.py) ---- */
 .mark svg.logo { display: block; height: 28px; width: auto; color: var(--ink); }
 .mark small { margin-top: 6px; }
+
+/* operational scenes */
+figure.ops { margin: 0; background: var(--panel); border: 1px solid var(--rule); border-radius: 4px; padding: 12px; display: grid; gap: 8px; min-width: 0; }
+figure.ops svg { width: 100%; height: auto; display: block; }
+figure.ops figcaption { font-size: 0.88rem; color: var(--ink-soft); }
+.opsrow { display: grid; gap: 22px; }
+figure.ops svg { max-width: 860px; margin-inline: auto; }
