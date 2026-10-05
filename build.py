@@ -118,7 +118,7 @@ LOGO = open(os.path.join(HERE, "brand", "wordmark-inline.svg")).read()   # from 
 
 
 # ------------------------------------------------------------------ shared chrome
-NAV = [("defence.html", "Defence"), ("medical.html", "Medical devices"), ("products.html", "Products"),
+NAV = [("defence.html", "Defence"), ("space.html", "Space"), ("medical.html", "Medical devices"), ("products.html", "Products"),
        ("evidence.html", "Evidence"), ("company.html", "Company")]
 
 
@@ -154,7 +154,7 @@ def page(fname, title, desc, body):
 </main>
 <footer><div class="wrap">
   <div class="cols">
-    <div><h4>Solutions</h4><ul><li><a href="defence.html">Defence and edge sensing</a></li><li><a href="medical.html">Medical devices</a></li><li><a href="products.html#archive">Long-term archives</a></li></ul></div>
+    <div><h4>Solutions</h4><ul><li><a href="defence.html">Defence and edge sensing</a></li><li><a href="space.html">Space and Earth observation</a></li><li><a href="medical.html">Medical devices</a></li><li><a href="products.html#archive">Long-term archives</a></li></ul></div>
     <div><h4>Products</h4><ul><li><a href="products.html#sdk">100on100 SDK</a></li><li><a href="products.html#attest">100on100 Attest</a></li><li><a href="products.html#archive">100on100 Archive</a></li><li><a href="services.html">Services</a></li></ul></div>
     <div><h4>Evidence</h4><ul><li><a href="evidence.html">Measurements</a></li><li><a href="evidence.html#compression">Compression</a></li><li><a href="downloads.html">Downloads</a></li></ul></div>
     <div><h4>Company</h4><ul><li><a href="company.html">About</a></li><li><a href="company.html#contact">Contact</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="legal.html">Legal notice</a></li></ul></div>
@@ -233,8 +233,9 @@ page("index.html", "100on100",
 
 <section class="alt" aria-labelledby="sol-h"><div class="wrap">
   <div class="head"><p class="label">Solutions</p><h2 id="sol-h">Where an exact image matters</h2></div>
-  <div class="cards">
+  <div class="cards two">
     <a class="card" href="defence.html">{img_art("aerial-tiles", "Aerial drone frame with a 256 by 256 tile grid, one tile highlighted")}<div class="body"><span class="state ready">Available to pilot</span><h3>Defence and edge sensing</h3><p>Raw sensor frames kept exactly, moved over narrow links, decoded on any machine, with proof that nothing changed on the way.</p><span class="more">More →</span></div></a>
+    <a class="card" href="space.html">{img_art("hero-aerial", "Aerial view of a river and dam from a drone camera")}<div class="body"><span class="state prog">In development</span><h3>Space and Earth observation</h3><p>Raw sensor samples kept exactly over narrow downlinks, a damaged tile refused by number while the rest of the frame still decodes, and one result on every ground machine.</p><span class="more">More →</span></div></a>
     <a class="card" href="medical.html"><div class="art">{art_refuse()}</div><div class="body"><span class="state later">In development</span><h3>Medical devices</h3><p>A decoder inside your device that refuses a malformed study instead of showing a wrong image, and gives every viewer the same pixels.</p><span class="more">More →</span></div></a>
     <a class="card" href="products.html#archive"><div class="art">{art_archive()}</div><div class="body"><span class="state later">Planned</span><h3>Long-term archives</h3><p>Files that carry their own decoder, so an image stored today can still be read when the software that wrote it is gone.</p><span class="more">More →</span></div></a>
   </div>
@@ -289,6 +290,44 @@ page("defence.html", "100on100 for Defence",
     <li>A pilot on your own sensor data: we report rate, decode time and refusal behaviour, including where we lose.</li>
     <li>Integration through the decode SDK (C99 and WebAssembly), with the fuzzing and attestation results attached.</li>
   </ol>
+</div></section>
+{DEMO}""")
+
+# ------------------------------------------------------------------ space
+page("space.html", "100on100 for Space",
+     "Lossless raw imaging for space and Earth observation: exact samples over narrow downlinks, per-tile checksums, region decode, and one result on every ground machine.",
+     pagehead("Solutions / Space", "Every sample from orbit, kept exactly",
+              "For payload and ground-segment leaders at space agencies, satellite makers and Earth-observation operators.", "aerial-tiles") +
+     f"""
+<section aria-labelledby="s-why"><div class="wrap">
+  <div class="cards two">
+    <div><div class="head"><p class="label">Why it matters</p><h2 id="s-why">Downlinks are narrow, and science needs the raw data</h2></div>
+      <ul class="steps">
+        <li>Bandwidth from orbit or deep space is scarce, but a lossy or demosaiced image throws away what later analysis may need.</li>
+        <li>Ground processing runs on many machines. With floating-point decoders, they need not agree to the last bit.</li>
+        <li>Damaged downlink data must be detected and set aside, not used as if it were good.</li>
+      </ul></div>
+    <div class="card"><div class="art">{art_tiles()}</div><div class="body"><h3>Region by region</h3><p>Images are cut into 256 × 256 tiles. A region of interest decodes without the rest of the frame.</p></div></div>
+  </div>
+</div></section>
+
+<section class="alt" aria-labelledby="s-offer"><div class="wrap">
+  <div class="head"><p class="label">What you get</p><h2 id="s-offer">What 100on100 gives a payload and its ground segment</h2></div>
+  <div class="cards">
+    <div class="card">{img_art("mosaic-zoom", "Magnified raw sensor samples")}<div class="body"><h3>Raw, before processing</h3><p>The sensor's own samples, stored losslessly before demosaicing or calibration, so the ground team works from what the detector recorded.</p></div></div>
+    <div class="card"><div class="art">{art_refuse()}</div><div class="body"><h3>Damage contained to a tile</h3><p>Each tile carries its own checksum, so a damaged tile is identified and refused with a numbered reason, and the other tiles can still be decoded on their own.</p></div></div>
+    <div class="card"><div class="art">{art_hashes()}</div><div class="body"><h3>One result on every ground machine</h3><p>Integer-only decoding. A test stream decodes identically on x86-64, ARM, RISC-V and WebAssembly.</p></div></div>
+  </div>
+</div></section>
+
+<section aria-labelledby="s-road"><div class="wrap">
+  <div class="head"><p class="label">Roadmap</p><h2 id="s-road">Where it stands for space</h2></div>
+  <div class="cards">
+    <div class="card"><div class="art">{art_tiles()}</div><div class="body"><span class="state ready">Ready</span><h3>Format and decoder</h3><p>Format version 4 with tiles and checksums; a 93,544-octet decoder; a C99 decoder matching the reference byte for byte.</p></div></div>
+    <div class="card"><div class="art">{art_sdk()}</div><div class="body"><span class="state prog">In development</span><h3>An encoder for the payload</h3><p>On board, the encoder is what flies. A C99 encoder is next, then an FPGA or RISC-V soft-core encoder with measured power and area.</p></div></div>
+    <div class="card"><div class="art">{art_mosaic()}</div><div class="body"><span class="state later">Version 5</span><h3>Beyond colour cameras</h3><p>Single-plane greyscale and infrared, signed samples, and multispectral planes.</p></div></div>
+  </div>
+  <p class="note">We have not yet compared 100on100 with the space data-system standards for lossless image compression (CCSDS 121 and CCSDS 123). That comparison, on openly licensed data, is on our roadmap, and we will publish it including wherever the standards do better.</p>
 </div></section>
 {DEMO}""")
 
