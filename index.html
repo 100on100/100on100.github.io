@@ -33,7 +33,7 @@
   <div>
     <p class="label">Lossless imaging · auditable decoder</p>
     <h1 style="margin-top:14px">Every pixel back, exactly, from a decoder small enough to read.</h1>
-    <p class="lead">100on100 stores raw sensor images without losing a bit. Its decoder is one program of 94,336 octets. It gives the same pixels on every machine we have tested, and refuses a damaged or hostile file with a numbered reason instead of guessing.</p>
+    <p class="lead">100on100 stores raw sensor images without losing a bit. Its whole decoder image is 94,336 octets, runtime included, and its C library decoder is 9,075. It gives the same pixels on every machine we have tested, and refuses a damaged or hostile file with a numbered reason instead of guessing.</p>
     <div class="ctas"><a class="btn primary" href="company.html#contact">Request a briefing</a><a class="btn light" href="evidence.html">See the evidence</a></div>
   </div>
   <figure class="shot"><img src="img/mosaic-zoom.jpg" alt="Magnified raw sensor samples, each in its red, green or blue filter colour" loading="lazy"><figcaption>What a sensor actually stores: 16 × 24 raw samples, one colour each, magnified. 100on100 keeps every one. <span class="credit">Raw frame: FIMI X8SE drone, raw.pixls.us (CC0)</span></figcaption></figure>
@@ -76,7 +76,7 @@
 <section aria-labelledby="proof-h"><div class="wrap">
   <div class="head"><p class="label">Proof</p><h2 id="proof-h">Measured, not claimed</h2><p>Every figure comes from the codec's own records and can be checked by your engineers.</p></div>
   <div class="strip">
-  <div><span class="fig num">94,336</span><p>octets: the entire decoder, for format versions 1 to 4</p></div>
+  <div><span class="fig num">94,336</span><p>octets: the whole RISC-V decoder image, runtime included, for format versions 1 to 4</p></div>
   <div><span class="fig num">1</span><p>decoded result on x86-64, ARM, RISC-V and WebAssembly for a test stream</p></div>
   <div><span class="fig num">43 / 43</span><p>hard and hostile files decoded exactly or refused by number</p></div>
   <div><span class="fig num">3,442</span><p>files where the C99 decoder matched the reference byte for byte</p></div>

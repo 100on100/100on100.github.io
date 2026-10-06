@@ -99,6 +99,80 @@ def art_sdk():
     return svg(320, 166, "".join(out), "Illustration of a decode SDK call sequence")
 
 
+# ------------------------------------------------------------------ head to head (research/compete-results.md, owner-approved 2026-10-05)
+SIZES = [("100on100 (C99)", 9075, True), ("CCSDS 121 · libaec", 6435, False), ("JPEG-LS · CharLS", 84335, False),
+         ("JPEG 2000 · OpenJPEG", 176050, False), ("JPEG XL · libjxl", 713139, False)]
+DAMAGE = [("100on100", 9600, 0, 0), ("JPEG XL", 9569, 31, 0), ("JPEG-LS", 8032, 896, 672),
+          ("CCSDS 121", 5052, 4548, 0), ("JPEG 2000", 2402, 7196, 0)]     # refused, wrong-as-success, slow refusal (> 5 s)
+
+
+def chart_size():
+    """Decoder code + data, octets, linear scale: the scale IS the message."""
+    W, L, R, top, bh, gap = 680, 190, 150, 14, 26, 14
+    mx = max(v for _, v, _ in SIZES); out = []
+    for k, (name, v, ours) in enumerate(SIZES):
+        y = top + k * (bh + gap); w = max(3, (W - L - R) * v / mx)
+        fill = "var(--brand)" if ours else "var(--ink-soft)"
+        mult = "" if ours else (f"{v / 9075:.0f}× larger" if v > 9075 else "smaller, simpler coder")
+        out.append(txt(L - 10, y + 18, name, 13, 700 if ours else 500, "var(--ink)", "end", False))
+        out.append(f'<rect x="{L}" y="{y}" width="{w:.1f}" height="{bh}" rx="2" style="fill:{fill};opacity:{1 if ours else .55}"/>')
+        out.append(txt(L + w + 8, y + 18, f"{v:,}" + (f"  ·  {mult}" if mult else ""), 12, 700 if ours else 500, "var(--ink)", "start", False))
+    h = top + len(SIZES) * (bh + gap) + 6
+    out.append(txt(L, h + 8, "decoder code + data, octets · built and measured the same way", 11, 500, "var(--ink-soft)", "start", False))
+    return svg(W, h + 16, "".join(out), "Decoder sizes: 100on100 9,075 octets; libaec 6,435; CharLS 84,335; OpenJPEG 176,050; libjxl 713,139")
+
+
+def chart_damage():
+    """9,600 damaged files per codec: refused, slow refusal, wrong image reported as success."""
+    W, L, top, bh, gap = 680, 110, 14, 26, 14; B = W - L - 70; out = []
+    for k, (name, ref, wrong, slow) in enumerate(DAMAGE):
+        y = top + k * (bh + gap); n = 9600; x = L
+        out.append(txt(L - 10, y + 18, name, 13, 700 if k == 0 else 500, "var(--ink)", "end", False))
+        for v, col in ((ref, "var(--g)"), (slow, "#d9a441"), (wrong, "var(--refuse)")):
+            if v:
+                w = B * v / n; out.append(f'<rect x="{x:.1f}" y="{y}" width="{w:.1f}" height="{bh}" style="fill:{col}"/>'); x += w
+        out.append(txt(L + B + 8, y + 18, f"{100 * wrong / n:.1f}%" if wrong else "0", 13, 800, "var(--refuse)" if wrong else "var(--g)", "start", False))
+    h = top + len(DAMAGE) * (bh + gap)
+    lx = L
+    for lab, col in (("refused", "var(--g)"), ("refused after ~10 s", "#d9a441"), ("wrong image reported as success", "var(--refuse)")):
+        out.append(f'<rect x="{lx}" y="{h + 2}" width="12" height="12" style="fill:{col}"/>'); out.append(txt(lx + 18, h + 13, lab, 11, 600, "var(--ink-soft)", "start", False))
+        lx += 26 + 7 * len(lab)
+    return svg(W, h + 22, "".join(out), "Damaged files: wrong images reported as success: 100on100 0%, JPEG XL 0.3%, JPEG-LS 9.3%, CCSDS 121 47.4%, JPEG 2000 75.0%")
+
+
+FAIR = ("100on100 checks a checksum over its header and over every tile, so any change to the data is caught and refused. "
+        "CCSDS 121 streams and JPEG 2000 codestreams carry no integrity check over the coded data, by design; JPEG XL and JPEG-LS "
+        "catch most damage through their own decoding, but not all.")
+METHOD = ("Method: libjxl 0.11.2, OpenJPEG 2.5.4, CharLS 2.4.3 and libaec 1.1.6, each built from its release source the same way "
+          "(size-optimised, unused code removed, runtime libraries not counted). 24 raw camera crops (CC0) encoded losslessly by every codec; "
+          "each file then damaged 400 ways (one bit flipped, 4 octets overwritten, 16 octets zeroed, cut short), identically for every codec: "
+          "9,600 damaged files per codec, 48,000 in all.")
+
+
+EVX = """
+  <div class="tablewrap" style="margin-top:22px"><table class="data"><thead><tr><th>9,600 damaged files each</th><th>refused</th><th>wrong image, reported as success</th><th>refused only after ~10 s</th><th>crash</th></tr></thead><tbody>
+    <tr><td><strong>100on100</strong></td><td class="n"><strong>9,600</strong></td><td class="n"><strong>0</strong></td><td class="n">0</td><td class="n">0</td></tr>
+    <tr><td>JPEG XL (libjxl)</td><td class="n">9,569</td><td class="n">31 (0.3%)</td><td class="n">0</td><td class="n">0</td></tr>
+    <tr><td>JPEG-LS (CharLS)</td><td class="n">8,032</td><td class="n">896 (9.3%)</td><td class="n">672 (7.0%)</td><td class="n">0</td></tr>
+    <tr><td>CCSDS 121 (libaec)</td><td class="n">5,052</td><td class="n">4,548 (47.4%)</td><td class="n">0</td><td class="n">0</td></tr>
+    <tr><td>JPEG 2000 (OpenJPEG)</td><td class="n">2,402</td><td class="n">7,196 (75.0%)</td><td class="n">0</td><td class="n">0</td></tr>
+  </tbody></table></div>
+  <p class="note"><strong>The wrong images are subtle.</strong> Checked independently, single-bit damage changed JPEG XL images by 1 to 268 samples (off by at most 24) and JPEG 2000 images by up to 16,000 samples (off by at most 80), and each was reported as a successful decode: a picture that looks right and is not. JPEG-LS refused its slow cases in the end, after about 10 seconds each, against 12 ms for a clean decode. JPEG 2000 also decoded 2 damaged files exactly.</p>"""
+
+
+def head2head(intro, extra=""):
+    return f"""
+<section aria-labelledby="h2h-h"><div class="wrap">
+  <div class="head"><p class="label">Head to head</p><h2 id="h2h-h">Smaller decoder. No undetected corruption.</h2><p>{intro}</p></div>
+  <div class="opsrow">
+    <figure class="ops">{chart_size()}<figcaption><strong>9,075 octets: 79× smaller than JPEG XL, 19× smaller than JPEG 2000, 9× smaller than JPEG-LS.</strong> CCSDS 121 is smaller still: a simpler coder, which 100on100 out-compresses.</figcaption></figure>
+    <figure class="ops">{chart_damage()}<figcaption><strong>0 of 9,600 damaged files produced undetected corruption: every one was refused.</strong> JPEG XL 0.3%, JPEG-LS 9.3%, CCSDS 121 47%, JPEG 2000 75% decoded to a wrong image and reported success.</figcaption></figure>
+  </div>
+  <p class="note">{FAIR}</p>{extra}
+  <p class="cite">{METHOD} <a href="evidence.html#h2h-h">Full results</a>.</p>
+</div></section>"""
+
+
 # ------------------------------------------------------------------ operational scenes: where the decoder sits in a real flow
 S = "fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round"
 
@@ -303,7 +377,7 @@ DEMO = f"""<div class="demo"><div class="wrap">
 </div></div>"""
 
 STRIP = """<div class="strip">
-  <div><span class="fig num">94,336</span><p>octets: the entire decoder, for format versions 1 to 4</p></div>
+  <div><span class="fig num">94,336</span><p>octets: the whole RISC-V decoder image, runtime included, for format versions 1 to 4</p></div>
   <div><span class="fig num">1</span><p>decoded result on x86-64, ARM, RISC-V and WebAssembly for a test stream</p></div>
   <div><span class="fig num">43 / 43</span><p>hard and hostile files decoded exactly or refused by number</p></div>
   <div><span class="fig num">3,442</span><p>files where the C99 decoder matched the reference byte for byte</p></div>
@@ -317,7 +391,7 @@ page("index.html", "100on100",
   <div>
     <p class="label">Lossless imaging · auditable decoder</p>
     <h1 style="margin-top:14px">Every pixel back, exactly, from a decoder small enough to read.</h1>
-    <p class="lead">100on100 stores raw sensor images without losing a bit. Its decoder is one program of 94,336 octets. It gives the same pixels on every machine we have tested, and refuses a damaged or hostile file with a numbered reason instead of guessing.</p>
+    <p class="lead">100on100 stores raw sensor images without losing a bit. Its whole decoder image is 94,336 octets, runtime included, and its C library decoder is 9,075. It gives the same pixels on every machine we have tested, and refuses a damaged or hostile file with a numbered reason instead of guessing.</p>
     <div class="ctas"><a class="btn primary" href="company.html#contact">Request a briefing</a><a class="btn light" href="evidence.html">See the evidence</a></div>
   </div>
   {shot("mosaic-zoom", "Magnified raw sensor samples, each in its red, green or blue filter colour", "What a sensor actually stores: 16 × 24 raw samples, one colour each, magnified. 100on100 keeps every one.")}
@@ -373,7 +447,7 @@ page("index.html", "100on100",
 page("defence.html", "100on100 for Defence",
      "Lossless raw sensor imaging for defence research: an auditable decoder, bit-exact on every tested machine, refusing hostile files by number.",
      pagehead("Solutions / Defence", "Keep every raw frame, and prove it arrived intact",
-              "For programme managers and office directors whose systems capture raw sensor data at the edge and must keep it exactly.", "drone-mountain") + plain("defence", "") +
+              "For programme managers and office directors whose systems capture raw sensor data at the edge and must keep it exactly.", "drone-mountain") + plain("defence", "") + head2head("For ISR data, a picture that is quietly wrong is worse than no picture. We damaged the same files the same ways for five codecs: only 100on100 caught every one, and its decoder is 9 to 79 times smaller than the JPEG-LS, JPEG 2000 and JPEG XL decoders.") +
      f"""
 <section aria-labelledby="d-problem"><div class="wrap">
   <div class="cards two">
@@ -390,7 +464,7 @@ page("defence.html", "100on100 for Defence",
 <section class="alt" aria-labelledby="d-offer"><div class="wrap">
   <div class="head"><p class="label">What you get</p><h2 id="d-offer">What 100on100 gives your programme</h2></div>
   <div class="cards">
-    <div class="card"><div class="art">{art_sdk()}</div><div class="body"><h3>A decoder your team can review</h3><p>94,336 octets for the whole decoder, under a hard cap of 98,304. A plain C99 version for linking matches it byte for byte.</p></div></div>
+    <div class="card"><div class="art">{art_sdk()}</div><div class="body"><h3>A decoder your team can review</h3><p>94,336 octets for the whole RISC-V decoder image, runtime included, under a hard cap of 98,304. The plain C99 library, 9,075 octets of code and data, matches it byte for byte.</p></div></div>
     <div class="card"><div class="art">{art_refuse()}</div><div class="body"><h3>Hostile files turned away</h3><p>A damaged or crafted file is refused with a numbered reason. In our tests, none became a plausible wrong picture.</p></div></div>
     <div class="card"><div class="art">{art_hashes()}</div><div class="body"><h3>One result on every machine</h3><p>Integer-only decoding. A test stream gives one result on x86-64, ARM, RISC-V and WebAssembly, so a receiver can prove what it decoded.</p></div></div>
     <div class="card">{img_art("aerial-tiles", "Aerial frame with its tile grid, one tile highlighted")}<div class="body"><h3>Region decode</h3><p>256 × 256 tiles. Decode only the region you need, or spread one frame across machines with identical results.</p></div></div>
@@ -439,11 +513,11 @@ page("space.html", "100on100 for Space",
 <section aria-labelledby="s-road"><div class="wrap">
   <div class="head"><p class="label">Roadmap</p><h2 id="s-road">Where it stands for space</h2></div>
   <div class="cards">
-    <div class="card"><div class="art">{art_tiles()}</div><div class="body"><span class="state ready">Ready</span><h3>Format and decoder</h3><p>Format version 4 with tiles and checksums; a 94,336-octet decoder; a C99 decoder matching the reference byte for byte.</p></div></div>
+    <div class="card"><div class="art">{art_tiles()}</div><div class="body"><span class="state ready">Ready</span><h3>Format and decoder</h3><p>Format version 4 with tiles and checksums; a 94,336-octet complete decoder image; a 9,075-octet C99 decoder matching the reference byte for byte.</p></div></div>
     <div class="card"><div class="art">{art_sdk()}</div><div class="body"><span class="state prog">In development</span><h3>An encoder for the payload</h3><p>On board, the encoder is what flies. A C99 encoder is next, then an FPGA or RISC-V soft-core encoder with measured power and area.</p></div></div>
     <div class="card"><div class="art">{art_mosaic()}</div><div class="body"><span class="state later">Version 5</span><h3>Beyond colour cameras</h3><p>Single-plane greyscale and infrared, signed samples, and multispectral planes.</p></div></div>
   </div>
-  <p class="note"><strong>Measured on open Landsat 8, Sentinel-2 and AVIRIS data</strong> (preliminary rates, before tiling): coded band by band, 100on100 is smaller than the CCSDS 121 lossless standard on multispectral data and level on hyperspectral. It is within 4–11% of CCSDS 123 on multispectral data, with a larger gap on hyperspectral, because CCSDS 123 predicts each band from its neighbours. Inter-band prediction is in development.</p>
+  <p class="note"><strong>Measured on open Landsat 8, Sentinel-2 and AVIRIS data, with the inter-band prediction planned for format version 5:</strong> level with CCSDS 123 on multispectral (Sentinel-2 −0.1%, Landsat +1.4%, pooled); about 12–13% behind on hyperspectral (stateless). Each tile decodes from its own stream and the tiles at the same position in at most two declared reference planes; no adaptive state. A damaged tile also blocks the tiles at the same position in the planes that reference it: one column of planes, not the file. Coded band by band, as today, 100on100 is smaller than the CCSDS 121 lossless standard on multispectral data.</p>
 </div></section>
 {DEMO}""")
 
@@ -469,6 +543,8 @@ page("medical.html", "100on100 for Medical Devices",
   </div>
   <figure class="ops" style="margin-top:28px">{OPS_MED}<figcaption>Where the decoder sits: from the modality, through the archive, to every viewer.</figcaption></figure>
 </div></section>
+
+{head2head("In a clinic, an image that is subtly wrong but decodes as if it were fine is the dangerous case. We damaged the same files the same ways for five codecs: 100on100 refused every one. (Measured on raw camera images; medical images arrive with format version 5.)")}
 
 <section class="alt" aria-labelledby="m-why"><div class="wrap">
   <div class="cards two">
@@ -542,7 +618,7 @@ page("products.html", "100on100 Products",
   <div class="head"><p class="label">The format</p><h2 id="fmt-h">What is in the box today</h2></div>
   <div class="cards">
     <div class="card">{img_art("aerial-tiles", "Aerial frame with its tile grid")}<div class="body"><span class="state ready">Ready</span><h3>Format version 4</h3><p>256 × 256 tiles, a header checksum, a declared bit depth up to 16, and a checksum on every tile.</p></div></div>
-    <div class="card"><div class="art">{art_refuse()}</div><div class="body"><span class="state ready">Ready</span><h3>The decoder</h3><p>94,336 octets, reading versions 1 to 4, under a hard cap of 98,304 octets.</p></div></div>
+    <div class="card"><div class="art">{art_refuse()}</div><div class="body"><span class="state ready">Ready</span><h3>The decoder</h3><p>94,336 octets as a complete RISC-V image, runtime included, reading versions 1 to 4, under a hard cap of 98,304 octets.</p></div></div>
     <div class="card"><div class="art">{art_sdk()}</div><div class="body"><span class="state ready">Ready</span><h3>The C99 decoder</h3><p>No dependencies. Byte-identical to the reference on 3,442 of 3,442 files and mutants.</p></div></div>
   </div>
 </div></section>
@@ -559,6 +635,8 @@ page("evidence.html", "100on100 Evidence",
     <p>We took one raw camera frame, compressed it with our encoder, decoded it with our decoder, and compared the result with the original, sample by sample. Not one of the 24,064,000 samples changed. That is what lossless means here: not "looks the same", but is the same.</p></div>
   {shot("proof-roundtrip", "Source raw frame, decoded frame, and a black difference panel reading 0 of 24,064,000 samples differ", "A real run (5 October 2026), using the C99 encoder and decoder, compared sample by sample: 0 differ. The previews are rendered from the raw samples for display.")}
 </div></section>
+
+{head2head("We built four widely used lossless decoders the same way as ours and measured them, then damaged the same files the same ways for every codec. These are the results, including where a competitor is smaller.", EVX)}
 
 <section class="alt" aria-labelledby="dmg-h"><div class="wrap">
   <div>
