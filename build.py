@@ -81,7 +81,8 @@ def art_archive():
            txt(24, 36, "archive file", 13, 700),
            '<rect x="24" y="50" width="110" height="94" rx="3" style="fill:var(--brand)"/>',
            txt(79, 92, "decoder", 13, 700, "var(--brand-ink)", "middle"),
-           txt(79, 112, "27,272 octets", 11, 600, "var(--brand-ink)", "middle")]
+           txt(79, 112, "27,272 octets", 11, 600, "var(--brand-ink)", "middle"),
+           txt(79, 128, "stack reserved", 9, 500, "var(--brand-ink)", "middle")]
     for k in range(6):
         out.append(f'<rect x="148" y="{52 + k * 15}" width="{136 - (k * 13) % 40}" height="9" style="fill:var(--rule)"/>')
     out.append(txt(148, 146, "image data", 11, 600, "var(--ink-soft)"))
@@ -269,9 +270,9 @@ PLAIN_POINTS = [
       "medical": "Every value in a scan is kept, so nothing a clinician might need is thrown away."}),
     ("A small program you can check",
      "The program that opens the pictures is short, like a picture book instead of a phone book, so a grown-up can read every page.",
-     {"defence": "At about 27 KiB, your security team can review all of it, not trust a black box.",
-      "space": "About 27 KiB: small enough for a review team to read in full before it goes anywhere near a mission.",
-      "medical": "About 27 KiB: small enough for your security and regulatory reviewers to read in full."}),
+     {"defence": "At about 27 KiB (code and data; its stack is reserved, not stored), your security team can review all of it, not trust a black box.",
+      "space": "About 27 KiB (code and data; its stack is reserved, not stored): small enough for a review team to read in full before it goes anywhere near a mission.",
+      "medical": "About 27 KiB (code and data; its stack is reserved, not stored): small enough for your security and regulatory reviewers to read in full."}),
     ("It says no to broken files",
      "If a picture arrives broken, or someone has tampered with it, the program does not guess. It says \u201cthis one is broken\u201d and gives the reason as a number.",
      {"defence": "Crafted image files are a known way to attack computers. In our tests, every damaged or hostile file was either read exactly or turned away.",
