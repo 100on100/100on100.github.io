@@ -391,7 +391,7 @@ page("index.html", "100on100",
   <div>
     <p class="label">Lossless imaging · auditable decoder</p>
     <h1 style="margin-top:14px">Every pixel back, exactly, from a decoder small enough to read.</h1>
-    <p class="lead">100on100 stores raw sensor images without losing a bit. Its whole decoder image is 27,272 octets of code and data, and its C library decoder is 9,075. It gives the same pixels on every machine we have tested, and refuses a damaged or hostile file with a numbered reason instead of guessing.</p>
+    <p class="lead">100on100 stores raw sensor images without losing a bit. Its whole decoder image is 27,272 octets of code and data (stack reserved, not stored), and its C library decoder is 9,075. It gives the same pixels on every machine we have tested, and refuses a damaged or hostile file with a numbered reason instead of guessing.</p>
     <div class="ctas"><a class="btn primary" href="company.html#contact">Request a briefing</a><a class="btn light" href="evidence.html">See the evidence</a></div>
   </div>
   {shot("mosaic-zoom", "Magnified raw sensor samples, each in its red, green or blue filter colour", "What a sensor actually stores: 16 × 24 raw samples, one colour each, magnified. 100on100 keeps every one.")}
@@ -513,7 +513,7 @@ page("space.html", "100on100 for Space",
 <section aria-labelledby="s-road"><div class="wrap">
   <div class="head"><p class="label">Roadmap</p><h2 id="s-road">Where it stands for space</h2></div>
   <div class="cards">
-    <div class="card"><div class="art">{art_tiles()}</div><div class="body"><span class="state ready">Ready</span><h3>Format and decoder</h3><p>Format version 4 with tiles and checksums; a 27,272-octet complete decoder image (code and data); a 9,075-octet C99 decoder matching the reference byte for byte.</p></div></div>
+    <div class="card"><div class="art">{art_tiles()}</div><div class="body"><span class="state ready">Ready</span><h3>Format and decoder</h3><p>Format version 4 with tiles and checksums; a 27,272-octet complete decoder image, code and data (stack reserved, not stored); a 9,075-octet C99 decoder matching the reference byte for byte.</p></div></div>
     <div class="card"><div class="art">{art_sdk()}</div><div class="body"><span class="state prog">In development</span><h3>An encoder for the payload</h3><p>On board, the encoder is what flies. A C99 encoder is next, then an FPGA or RISC-V soft-core encoder with measured power and area.</p></div></div>
     <div class="card"><div class="art">{art_mosaic()}</div><div class="body"><span class="state later">Version 5</span><h3>Beyond colour cameras</h3><p>Single-plane greyscale and infrared, signed samples, and multispectral planes.</p></div></div>
   </div>
