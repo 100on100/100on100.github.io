@@ -81,7 +81,7 @@ def art_archive():
            txt(24, 36, "archive file", 13, 700),
            '<rect x="24" y="50" width="110" height="94" rx="3" style="fill:var(--brand)"/>',
            txt(79, 92, "decoder", 13, 700, "var(--brand-ink)", "middle"),
-           txt(79, 112, "94,336 octets", 11, 600, "var(--brand-ink)", "middle")]
+           txt(79, 112, "27,272 octets", 11, 600, "var(--brand-ink)", "middle")]
     for k in range(6):
         out.append(f'<rect x="148" y="{52 + k * 15}" width="{136 - (k * 13) % 40}" height="9" style="fill:var(--rule)"/>')
     out.append(txt(148, 146, "image data", 11, 600, "var(--ink-soft)"))
@@ -269,9 +269,9 @@ PLAIN_POINTS = [
       "medical": "Every value in a scan is kept, so nothing a clinician might need is thrown away."}),
     ("A small program you can check",
      "The program that opens the pictures is short, like a picture book instead of a phone book, so a grown-up can read every page.",
-     {"defence": "At about 92 KiB, your security team can review all of it, not trust a black box.",
-      "space": "About 92 KiB: small enough for a review team to read in full before it goes anywhere near a mission.",
-      "medical": "About 92 KiB: small enough for your security and regulatory reviewers to read in full."}),
+     {"defence": "At about 27 KiB, your security team can review all of it, not trust a black box.",
+      "space": "About 27 KiB: small enough for a review team to read in full before it goes anywhere near a mission.",
+      "medical": "About 27 KiB: small enough for your security and regulatory reviewers to read in full."}),
     ("It says no to broken files",
      "If a picture arrives broken, or someone has tampered with it, the program does not guess. It says \u201cthis one is broken\u201d and gives the reason as a number.",
      {"defence": "Crafted image files are a known way to attack computers. In our tests, every damaged or hostile file was either read exactly or turned away.",
@@ -377,7 +377,7 @@ DEMO = f"""<div class="demo"><div class="wrap">
 </div></div>"""
 
 STRIP = """<div class="strip">
-  <div><span class="fig num">94,336</span><p>octets: the whole RISC-V decoder image, runtime included, for format versions 1 to 4</p></div>
+  <div><span class="fig num">27,272</span><p>octets: the whole RISC-V decoder image, code and data (stack reserved, not stored), for format versions 1 to 4</p></div>
   <div><span class="fig num">1</span><p>decoded result on x86-64, ARM, RISC-V and WebAssembly for a test stream</p></div>
   <div><span class="fig num">43 / 43</span><p>hard and hostile files decoded exactly or refused by number</p></div>
   <div><span class="fig num">3,442</span><p>files where the C99 decoder matched the reference byte for byte</p></div>
@@ -391,7 +391,7 @@ page("index.html", "100on100",
   <div>
     <p class="label">Lossless imaging · auditable decoder</p>
     <h1 style="margin-top:14px">Every pixel back, exactly, from a decoder small enough to read.</h1>
-    <p class="lead">100on100 stores raw sensor images without losing a bit. Its whole decoder image is 94,336 octets, runtime included, and its C library decoder is 9,075. It gives the same pixels on every machine we have tested, and refuses a damaged or hostile file with a numbered reason instead of guessing.</p>
+    <p class="lead">100on100 stores raw sensor images without losing a bit. Its whole decoder image is 27,272 octets of code and data, and its C library decoder is 9,075. It gives the same pixels on every machine we have tested, and refuses a damaged or hostile file with a numbered reason instead of guessing.</p>
     <div class="ctas"><a class="btn primary" href="company.html#contact">Request a briefing</a><a class="btn light" href="evidence.html">See the evidence</a></div>
   </div>
   {shot("mosaic-zoom", "Magnified raw sensor samples, each in its red, green or blue filter colour", "What a sensor actually stores: 16 × 24 raw samples, one colour each, magnified. 100on100 keeps every one.")}
@@ -464,7 +464,7 @@ page("defence.html", "100on100 for Defence",
 <section class="alt" aria-labelledby="d-offer"><div class="wrap">
   <div class="head"><p class="label">What you get</p><h2 id="d-offer">What 100on100 gives your programme</h2></div>
   <div class="cards">
-    <div class="card"><div class="art">{art_sdk()}</div><div class="body"><h3>A decoder your team can review</h3><p>94,336 octets for the whole RISC-V decoder image, runtime included, under a hard cap of 98,304. The plain C99 library, 9,075 octets of code and data, matches it byte for byte.</p></div></div>
+    <div class="card"><div class="art">{art_sdk()}</div><div class="body"><h3>A decoder your team can review</h3><p>27,272 octets: the whole RISC-V decoder image, code and data (stack reserved, not stored), under a hard cap of 98,304. The plain C99 library, 9,075 octets of code and data, matches it byte for byte.</p></div></div>
     <div class="card"><div class="art">{art_refuse()}</div><div class="body"><h3>Hostile files turned away</h3><p>A damaged or crafted file is refused with a numbered reason. In our tests, none became a plausible wrong picture.</p></div></div>
     <div class="card"><div class="art">{art_hashes()}</div><div class="body"><h3>One result on every machine</h3><p>Integer-only decoding. A test stream gives one result on x86-64, ARM, RISC-V and WebAssembly, so a receiver can prove what it decoded.</p></div></div>
     <div class="card">{img_art("aerial-tiles", "Aerial frame with its tile grid, one tile highlighted")}<div class="body"><h3>Region decode</h3><p>256 × 256 tiles. Decode only the region you need, or spread one frame across machines with identical results.</p></div></div>
@@ -513,7 +513,7 @@ page("space.html", "100on100 for Space",
 <section aria-labelledby="s-road"><div class="wrap">
   <div class="head"><p class="label">Roadmap</p><h2 id="s-road">Where it stands for space</h2></div>
   <div class="cards">
-    <div class="card"><div class="art">{art_tiles()}</div><div class="body"><span class="state ready">Ready</span><h3>Format and decoder</h3><p>Format version 4 with tiles and checksums; a 94,336-octet complete decoder image; a 9,075-octet C99 decoder matching the reference byte for byte.</p></div></div>
+    <div class="card"><div class="art">{art_tiles()}</div><div class="body"><span class="state ready">Ready</span><h3>Format and decoder</h3><p>Format version 4 with tiles and checksums; a 27,272-octet complete decoder image (code and data); a 9,075-octet C99 decoder matching the reference byte for byte.</p></div></div>
     <div class="card"><div class="art">{art_sdk()}</div><div class="body"><span class="state prog">In development</span><h3>An encoder for the payload</h3><p>On board, the encoder is what flies. A C99 encoder is next, then an FPGA or RISC-V soft-core encoder with measured power and area.</p></div></div>
     <div class="card"><div class="art">{art_mosaic()}</div><div class="body"><span class="state later">Version 5</span><h3>Beyond colour cameras</h3><p>Single-plane greyscale and infrared, signed samples, and multispectral planes.</p></div></div>
   </div>
@@ -618,7 +618,7 @@ page("products.html", "100on100 Products",
   <div class="head"><p class="label">The format</p><h2 id="fmt-h">What is in the box today</h2></div>
   <div class="cards">
     <div class="card">{img_art("aerial-tiles", "Aerial frame with its tile grid")}<div class="body"><span class="state ready">Ready</span><h3>Format version 4</h3><p>256 × 256 tiles, a header checksum, a declared bit depth up to 16, and a checksum on every tile.</p></div></div>
-    <div class="card"><div class="art">{art_refuse()}</div><div class="body"><span class="state ready">Ready</span><h3>The decoder</h3><p>94,336 octets as a complete RISC-V image, runtime included, reading versions 1 to 4, under a hard cap of 98,304 octets.</p></div></div>
+    <div class="card"><div class="art">{art_refuse()}</div><div class="body"><span class="state ready">Ready</span><h3>The decoder</h3><p>27,272 octets: the whole RISC-V decoder image, code and data (stack reserved, not stored), reading versions 1 to 4, under a hard cap of 98,304.</p></div></div>
     <div class="card"><div class="art">{art_sdk()}</div><div class="body"><span class="state ready">Ready</span><h3>The C99 decoder</h3><p>No dependencies. Byte-identical to the reference on 3,442 of 3,442 files and mutants.</p></div></div>
   </div>
 </div></section>
