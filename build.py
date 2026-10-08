@@ -381,7 +381,7 @@ STRIP = """<div class="strip">
   <div><span class="fig num">27,272</span><p>octets: the whole RISC-V decoder image, code and data (stack reserved, not stored), for format versions 1 to 4</p></div>
   <div><span class="fig num">1</span><p>decoded result on x86-64, ARM, RISC-V and WebAssembly for a test stream</p></div>
   <div><span class="fig num">43 / 43</span><p>hard and hostile files decoded exactly or refused by number</p></div>
-  <div><span class="fig num">3,488</span><p>files where the C99 decoder matched the reference byte for byte</p></div>
+  <div><span class="fig num">284 / 284</span><p>corpus files where the C99 decoder matched the reference byte for byte (97 of 97 test vectors also)</p></div>
 </div>
 <p class="cite" style="margin-top:10px">Details on the <a href="evidence.html">evidence page</a>. Test records are available to evaluators under NDA.</p>"""
 
@@ -633,7 +633,7 @@ page("products.html", "100on100 Products",
   <div class="cards">
     <div class="card">{img_art("aerial-tiles", "Aerial frame with its tile grid")}<div class="body"><span class="state ready">Ready</span><h3>Format version 4</h3><p>256 × 256 tiles, a header checksum, a declared bit depth up to 16, and a checksum on every tile.</p></div></div>
     <div class="card"><div class="art">{art_refuse()}</div><div class="body"><span class="state ready">Ready</span><h3>The decoder</h3><p>27,272 octets: the whole RISC-V decoder image, code and data (stack reserved, not stored), reading versions 1 to 4, under a hard cap of 98,304.</p></div></div>
-    <div class="card"><div class="art">{art_sdk()}</div><div class="body"><span class="state ready">Ready</span><h3>The C99 decoder</h3><p>No dependencies. Byte-identical to the reference on 3,488 of 3,488 files.</p></div></div>
+    <div class="card"><div class="art">{art_sdk()}</div><div class="body"><span class="state ready">Ready</span><h3>The C99 decoder</h3><p>No dependencies. Byte-identical to the reference on 284 of 284 corpus files and 97 of 97 test vectors.</p></div></div>
   </div>
 </div></section>
 {DEMO}""")
