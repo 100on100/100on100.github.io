@@ -378,7 +378,7 @@ DEMO = f"""<div class="demo"><div class="wrap">
 </div></div>"""
 
 STRIP = """<div class="strip">
-  <div><span class="fig num">27,272</span><p>octets: the whole RISC-V decoder image, code and data (stack reserved, not stored), for format versions 1 to 4</p></div>
+  <div><span class="fig num">27,272</span><p>octets: the whole RISC-V decoder image, code and data (stack and heap reserved, not stored), for format versions 1 to 4</p></div>
   <div><span class="fig num">1</span><p>decoded result on x86-64, ARM, RISC-V and WebAssembly for a test stream</p></div>
   <div><span class="fig num">43 / 43</span><p>hard and hostile files decoded exactly or refused by number</p></div>
   <div><span class="fig num">284 / 284</span><p>corpus files where the C99 decoder matched the reference byte for byte (97 of 97 test vectors also)</p></div>
@@ -389,7 +389,7 @@ STRIP = """<div class="strip">
 STRIP_HOME = """<div class="strip">
   <div><span class="fig num">0 of 9,600</span><p>damaged files decoded wrong or went undetected. Every one was decoded exactly or refused by number</p></div>
   <div><span class="fig num">9,075</span><p>octets: the whole C99 decoder library, with no allocation and no global state</p></div>
-  <div><span class="fig num">27,272</span><p>octets: the whole RISC-V decoder image, code and data (stack reserved, not stored)</p></div>
+  <div><span class="fig num">27,272</span><p>octets: the whole RISC-V decoder image, code and data (stack and heap reserved, not stored)</p></div>
   <div><span class="fig num">29.7 M</span><p>fuzzed inputs under AddressSanitizer and UBSan: 0 issues</p></div>
 </div>
 <p class="cite" style="margin-top:10px">Details on the <a href="evidence.html">evidence page</a>. Test records are available to evaluators under NDA.</p>"""
@@ -478,7 +478,7 @@ page("defence.html", "100on100 for Defence",
 <section class="alt" aria-labelledby="d-offer"><div class="wrap">
   <div class="head"><p class="label">What you get</p><h2 id="d-offer">What 100on100 gives your programme</h2></div>
   <div class="cards">
-    <div class="card"><div class="art">{art_sdk()}</div><div class="body"><h3>A decoder your team can review</h3><p>27,272 octets: the whole RISC-V decoder image, code and data (stack reserved, not stored), under a hard cap of 98,304. The plain C99 library, 9,075 octets of code and data, matches it byte for byte.</p></div></div>
+    <div class="card"><div class="art">{art_sdk()}</div><div class="body"><h3>A decoder your team can review</h3><p>27,272 octets: the whole RISC-V decoder image, code and data (stack and heap reserved, not stored), under a hard cap of 98,304. The plain C99 library, 9,075 octets of code and data, matches it byte for byte.</p></div></div>
     <div class="card"><div class="art">{art_refuse()}</div><div class="body"><h3>Hostile files turned away</h3><p>A damaged or crafted file is refused with a numbered reason. In our tests, none became a plausible wrong picture.</p></div></div>
     <div class="card"><div class="art">{art_hashes()}</div><div class="body"><h3>One result on every machine</h3><p>Integer-only decoding. A test stream gives one result on x86-64, ARM, RISC-V and WebAssembly, so a receiver can prove what it decoded.</p></div></div>
     <div class="card">{img_art("aerial-tiles", "Aerial frame with its tile grid, one tile highlighted")}<div class="body"><h3>Region decode</h3><p>256 × 256 tiles. Decode only the region you need, or spread one frame across machines with identical results.</p></div></div>
@@ -527,7 +527,7 @@ page("space.html", "100on100 for Space",
 <section aria-labelledby="s-road"><div class="wrap">
   <div class="head"><p class="label">Roadmap</p><h2 id="s-road">Where it stands for space</h2></div>
   <div class="cards">
-    <div class="card"><div class="art">{art_tiles()}</div><div class="body"><span class="state ready">Ready</span><h3>Format and decoder</h3><p>Format version 4 with tiles and checksums; a 27,272-octet complete decoder image, code and data (stack reserved, not stored); a 9,075-octet C99 decoder matching the reference byte for byte.</p></div></div>
+    <div class="card"><div class="art">{art_tiles()}</div><div class="body"><span class="state ready">Ready</span><h3>Format and decoder</h3><p>Format version 4 with tiles and checksums; a 27,272-octet complete decoder image, code and data (stack and heap reserved, not stored); a 9,075-octet C99 decoder matching the reference byte for byte.</p></div></div>
     <div class="card"><div class="art">{art_sdk()}</div><div class="body"><span class="state prog">In development</span><h3>An encoder for the payload</h3><p>On board, the encoder is what flies. A C99 encoder is next, then an FPGA or RISC-V soft-core encoder with measured power and area.</p></div></div>
     <div class="card"><div class="art">{art_mosaic()}</div><div class="body"><span class="state ready">Colour decoder released</span><h3>Colour pictures first, then beyond colour cameras</h3><p>For colour pictures the format is locked and a reference decoder is built. This release includes a decoder for colour pictures. Single-plane greyscale and infrared, signed samples, and multispectral planes follow.</p></div></div>
   </div>
@@ -632,7 +632,7 @@ page("products.html", "100on100 Products",
   <div class="head"><p class="label">The format</p><h2 id="fmt-h">What is in the box today</h2></div>
   <div class="cards">
     <div class="card">{img_art("aerial-tiles", "Aerial frame with its tile grid")}<div class="body"><span class="state ready">Ready</span><h3>Format version 4</h3><p>256 × 256 tiles, a header checksum, a declared bit depth up to 16, and a checksum on every tile.</p></div></div>
-    <div class="card"><div class="art">{art_refuse()}</div><div class="body"><span class="state ready">Ready</span><h3>The decoder</h3><p>27,272 octets: the whole RISC-V decoder image, code and data (stack reserved, not stored), reading versions 1 to 4, under a hard cap of 98,304.</p></div></div>
+    <div class="card"><div class="art">{art_refuse()}</div><div class="body"><span class="state ready">Ready</span><h3>The decoder</h3><p>27,272 octets: the whole RISC-V decoder image, code and data (stack and heap reserved, not stored), reading versions 1 to 4, under a hard cap of 98,304.</p></div></div>
     <div class="card"><div class="art">{art_sdk()}</div><div class="body"><span class="state ready">Ready</span><h3>The C99 decoder</h3><p>No dependencies. Byte-identical to the reference on 284 of 284 corpus files and 97 of 97 test vectors.</p></div></div>
   </div>
 </div></section>
