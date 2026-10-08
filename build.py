@@ -90,13 +90,13 @@ def art_archive():
 
 
 def art_sdk():
-    """The SDK surface, illustrative until the interface is agreed with the codec's owners."""
-    lines = ["img100 *f = img100_open(buf, len);", "img100_geometry(f, &w, &h, &tiles);",
-             "rc = img100_decode_tile(f, 0, 7, out);", "if (rc) puts(img100_reason(rc));"]
+    """The SDK surface, as in the evaluation release header."""
+    lines = ["rc = i100_probe(buf, len, &info);", "rc = i100_decode_tile(buf, len, 0, 7,",
+             "        ws, ws_len, out, n, &tw, &th);", "if (rc) printf(\"refused: %d\\n\", rc);"]
     out = ['<rect x="8" y="8" width="304" height="150" rx="4" style="fill:var(--ground);stroke:var(--rule)"/>']
     for k, l in enumerate(lines):
         out.append(txt(22, 42 + k * 28, l.replace("&", "&amp;").replace("<", "&lt;"), 12, 500))
-    out.append(txt(22, 150, "illustrative; the interface is being agreed", 10, 500, "var(--ink-soft)"))
+    out.append(txt(22, 150, "the library interface in the evaluation release", 10, 500, "var(--ink-soft)"))
     return svg(320, 166, "".join(out), "Illustration of a decode SDK call sequence")
 
 
@@ -381,65 +381,78 @@ STRIP = """<div class="strip">
   <div><span class="fig num">27,272</span><p>octets: the whole RISC-V decoder image, code and data (stack reserved, not stored), for format versions 1 to 4</p></div>
   <div><span class="fig num">1</span><p>decoded result on x86-64, ARM, RISC-V and WebAssembly for a test stream</p></div>
   <div><span class="fig num">43 / 43</span><p>hard and hostile files decoded exactly or refused by number</p></div>
-  <div><span class="fig num">3,442</span><p>files where the C99 decoder matched the reference byte for byte</p></div>
+  <div><span class="fig num">3,488</span><p>files where the C99 decoder matched the reference byte for byte</p></div>
 </div>
 <p class="cite" style="margin-top:10px">Details on the <a href="evidence.html">evidence page</a>. Test records are available to evaluators under NDA.</p>"""
 
-# ------------------------------------------------------------------ home
+# ------------------------------------------------------------------ home (v2, 2026-10-07: business page; every figure from research/claims-register.md)
+STRIP_HOME = """<div class="strip">
+  <div><span class="fig num">0 of 9,600</span><p>damaged files decoded wrong or went undetected. Every one was decoded exactly or refused by number</p></div>
+  <div><span class="fig num">9,075</span><p>octets: the whole C99 decoder library, with no allocation and no global state</p></div>
+  <div><span class="fig num">27,272</span><p>octets: the whole RISC-V decoder image, code and data (stack reserved, not stored)</p></div>
+  <div><span class="fig num">29.7 M</span><p>fuzzed inputs under AddressSanitizer and UBSan: 0 issues</p></div>
+</div>
+<p class="cite" style="margin-top:10px">Details on the <a href="evidence.html">evidence page</a>. Test records are available to evaluators under NDA.</p>"""
+
 page("index.html", "100on100",
-     "Lossless imaging with a decoder small enough to audit: the same pixels on every tested machine, and damaged files refused by number.",
+     "Lossless imaging with a decoder small enough to audit: damaged files are decoded exactly or refused by number.",
      f"""<div class="heroband photo" style="--img:url(img/hero-aerial.jpg)"><div class="wrap">
   <div>
     <p class="label">Lossless imaging · auditable decoder</p>
-    <h1 style="margin-top:14px">Every pixel back, exactly, from a decoder small enough to read.</h1>
-    <p class="lead">100on100 stores raw sensor images without losing a bit. Its whole decoder image is 27,272 octets of code and data (stack reserved, not stored), and its C library decoder is 9,075. It gives the same pixels on every machine we have tested, and refuses a damaged or hostile file with a numbered reason instead of guessing.</p>
+    <h1 style="margin-top:14px">Raw images kept exactly. Damaged files never passed off as good.</h1>
+    <p class="lead">100on100 stores raw sensor images without losing a bit, in a decoder small enough for your own engineers to read. In our test of 9,600 damaged files, none was decoded wrong or went undetected: each was decoded exactly or refused with a numbered reason.</p>
     <div class="ctas"><a class="btn primary" href="company.html#contact">Request a briefing</a><a class="btn light" href="evidence.html">See the evidence</a></div>
   </div>
   {shot("mosaic-zoom", "Magnified raw sensor samples, each in its red, green or blue filter colour", "What a sensor actually stores: 16 × 24 raw samples, one colour each, magnified. 100on100 keeps every one.")}
 </div></div>
-<div class="callouts">
-  <a class="callout" href="defence.html"><span class="label">Defence</span><h3>Keep every raw frame, and prove it arrived intact</h3><p>Lossless sensor data over narrow links, decoded identically anywhere.</p><span class="more">More →</span></a>
-  <a class="callout" href="medical.html"><span class="label">Medical devices</span><h3>A decoder that refuses, not guesses</h3><p>Malformed files turned away with a numbered reason.</p><span class="more">More →</span></a>
-  <a class="callout" href="evidence.html"><span class="label">Evidence</span><h3>Measured, not claimed</h3><p>Every figure with the section that records it, and our losses too.</p><span class="more">More →</span></a>
-</div>
 
-<div class="wrap statement">
-  <p class="label">How it works</p>
-  <h2>Built from rules, not trained on data</h2>
-  <p>100on100 describes an image as a sequence of tokens drawn from a fixed model that is generated by rule. Each small block of samples is predicted by one rule from a set enumerated by rule, never fitted to anyone's images. There are no trained tables and no weights, so nothing in the format depends on a training set. The same rules gave the same tokens on every machine we have tested, and the decoder only has to follow them back.</p>
-</div>
-
-<div class="wrap statement">
-  <p class="label">100on100</p>
-  <h2>We make every image provable</h2>
-  <p>An image is worth keeping only if you can trust what comes back out. 100on100 is a lossless image format and a decoder small enough for your own team to review. Decoding uses integers only, so there is no floating-point rounding for machines to disagree on. In our test sets, every damaged or hostile file was either decoded exactly or refused by number.</p>
-</div>
-
-<section aria-labelledby="corpus-h"><div class="wrap feature">
-  <div class="head" style="margin:0"><p class="label">Real sensor data</p><h2 id="corpus-h">Measured on raw frames from 67 cameras</h2>
-    <p>Drones, phones, action cameras and medium-format backs: one raw file per camera model, 1.22 billion samples, every one decoded back and compared bit for bit. These are the frames behind our compression figures.</p>
-    <a class="more" href="evidence.html#compression">See the figures →</a></div>
-  {shot("cameras-sheet", "Thumbnails of 65 raw camera frames", "65 of the 67 frames, rendered from their raw mosaics.")}
+<section aria-labelledby="proof-h"><div class="wrap">
+  <div class="head"><p class="label">True today</p><h2 id="proof-h">Measured, not claimed</h2><p>Every figure comes from our own test records and can be checked by your engineers.</p></div>
+  {STRIP_HOME}
 </div></section>
 
-<section class="alt" aria-labelledby="sol-h"><div class="wrap">
-  <div class="head"><p class="label">Solutions</p><h2 id="sol-h">Where an exact image matters</h2></div>
+<section class="alt" aria-labelledby="who-h"><div class="wrap">
+  <div class="head"><p class="label">Solutions</p><h2 id="who-h">Where an exact image matters</h2></div>
   <div class="cards two">
-    <a class="card" href="defence.html">{img_art("aerial-tiles", "Aerial drone frame with a 256 by 256 tile grid, one tile highlighted")}<div class="body"><span class="state ready">Available to pilot</span><h3>Defence and edge sensing</h3><p>Raw sensor frames kept exactly, moved over narrow links, decoded on any machine, with proof that nothing changed on the way.</p><span class="more">More →</span></div></a>
-    <a class="card" href="space.html">{img_art("hero-aerial", "Aerial view of a river and dam from a drone camera")}<div class="body"><span class="state prog">In development</span><h3>Space and Earth observation</h3><p>Raw sensor samples kept exactly over narrow downlinks, a damaged tile refused by number while the rest of the frame still decodes, and one result on every ground machine.</p><span class="more">More →</span></div></a>
-    <a class="card" href="medical.html"><div class="art">{art_refuse()}</div><div class="body"><span class="state later">In development</span><h3>Medical devices</h3><p>A decoder inside your device that refuses a malformed study instead of showing a wrong image, and gives every viewer the same pixels.</p><span class="more">More →</span></div></a>
+    <a class="card" href="defence.html">{img_art("aerial-tiles", "Aerial drone frame with a 256 by 256 tile grid, one tile highlighted")}<div class="body"><span class="state ready">Available to pilot</span><h3>Defence and edge sensing</h3><p>Raw sensor frames kept exactly, moved over narrow links and decoded on any machine, with a damaged tile refused while the others still decode.</p><span class="more">More →</span></div></a>
+    <a class="card" href="space.html">{img_art("hero-aerial", "Aerial view of a river and dam from a drone camera")}<div class="body"><span class="state prog">In development</span><h3>Space and Earth observation</h3><p>Raw samples kept exactly over narrow downlinks, with measured results against the space standards on open data.</p><span class="more">More →</span></div></a>
+    <a class="card" href="medical.html"><div class="art">{art_refuse()}</div><div class="body"><span class="state later">In development</span><h3>Medical devices</h3><p>A decoder inside your device that refuses a malformed study instead of showing a wrong image.</p><span class="more">More →</span></div></a>
     <a class="card" href="products.html#archive"><div class="art">{art_archive()}</div><div class="body"><span class="state later">Planned</span><h3>Long-term archives</h3><p>Files that carry their own decoder, so an image stored today can still be read when the software that wrote it is gone.</p><span class="more">More →</span></div></a>
   </div>
 </div></section>
 
-<section aria-labelledby="proof-h"><div class="wrap">
-  <div class="head"><p class="label">Proof</p><h2 id="proof-h">Measured, not claimed</h2><p>Every figure comes from the codec's own records and can be checked by your engineers.</p></div>
-  {STRIP}
+{head2head("Decoder size and damaged-file behaviour, measured against four standard lossless codecs the same way for each. We publish where others are smaller, too.")}
+
+<section class="alt" aria-labelledby="where-h"><div class="wrap">
+  <div class="head"><p class="label">Stated plainly</p><h2 id="where-h">Where others are ahead</h2></div>
+  <div class="tablewrap"><table class="data">
+    <thead><tr><th>Measure</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td>Decoder size</td><td>CCSDS 121 (libaec) is smaller at 6,435 octets. 100on100 is 9,075.</td></tr>
+      <tr><td>File size, 67 raw camera sensors (tiled files)</td><td>About 9.8% smaller than JPEG-LS and 4.5% smaller than FFV1, and about 1.1% larger than JPEG XL.</td></tr>
+      <tr><td>Sensors measured</td><td>67 cameras, one raw file per model, CC0 (raw.pixls.us). Every file decoded back and compared bit for bit.</td></tr>
+    </tbody>
+  </table></div>
+</div></section>
+
+<section aria-labelledby="buy-h"><div class="wrap">
+  <div class="head"><p class="label">Working with us</p><h2 id="buy-h">Start with your own data</h2></div>
+  <div class="cards">
+    <div class="card"><div class="body"><h3>1. Briefing</h3><p>Thirty minutes: the risk 100on100 removes, the evidence your engineers can check, and what is ready today versus planned.</p></div></div>
+    <div class="card"><div class="body"><h3>2. Evaluation</h3><p>Compiled decoder binaries for Linux, macOS and WebAssembly are free for evaluation, with checksums on the releases page. Test records are available under NDA.</p></div></div>
+    <div class="card"><div class="body"><h3>3. Pilot, then licence</h3><p>A pilot on your own frames, with the refusal test run on your data. Production use is licensed under a commercial licence, and 100on100 is distributed as compiled binaries.</p></div></div>
+  </div>
 </div></section>
 
 <section class="alt" aria-labelledby="why-h"><div class="wrap">
   <div class="head"><p class="label">Why now</p><h2 id="why-h">Image decoders are being exploited in the wild</h2><p>An image arrives from outside, and the decoder is the first code that touches it. Both of these are in the US government's catalogue of exploited vulnerabilities.</p></div>
   {part("cves.html")}
+</div></section>
+
+<section aria-labelledby="lim-h"><div class="wrap prose">
+  <p class="label">Limits</p>
+  <h2 id="lim-h" style="font-size:1.3rem">What the test covers</h2>
+  <p>Our damaged-file test covers one bit flipped, 4 octets overwritten, 16 octets zeroed and truncation, on 24 camera crops. It does not cover larger images or every kind of damage, and we make no claim beyond the figures on this page.</p>
 </div></section>
 
 {DEMO}""")
@@ -470,7 +483,7 @@ page("defence.html", "100on100 for Defence",
     <div class="card"><div class="art">{art_hashes()}</div><div class="body"><h3>One result on every machine</h3><p>Integer-only decoding. A test stream gives one result on x86-64, ARM, RISC-V and WebAssembly, so a receiver can prove what it decoded.</p></div></div>
     <div class="card">{img_art("aerial-tiles", "Aerial frame with its tile grid, one tile highlighted")}<div class="body"><h3>Region decode</h3><p>256 × 256 tiles. Decode only the region you need, or spread one frame across machines with identical results.</p></div></div>
     <div class="card"><div class="art">{art_archive()}</div><div class="body"><h3>Built to outlast</h3><p>Planned: archive files that carry their own decoder.</p></div></div>
-    <div class="card">{img_art("mosaic-zoom", "Magnified raw sensor samples")}<div class="body"><h3>Open to inspection</h3><p>The decoder is small enough to read in full, and its source is available to your evaluators for review.</p></div></div>
+    <div class="card">{img_art("mosaic-zoom", "Magnified raw sensor samples")}<div class="body"><h3>Binary evaluation</h3><p>Compiled binaries are free to evaluate, and production use is licensed. The decoder is small enough for your engineers to review the evidence for themselves; test records are available to evaluators under NDA.</p></div></div>
   </div>
 </div></section>
 
@@ -567,7 +580,7 @@ page("medical.html", "100on100 for Medical Devices",
     <div class="card"><div class="art">{art_tiles()}</div><div class="body"><span class="state later">Version 5</span><h3>Greyscale and signed CT</h3><p>Single-channel images, and CT values below zero stored with an offset.</p></div></div>
     <div class="card"><div class="art">{art_sdk()}</div><div class="body"><span class="state later">After version 5</span><h3>DICOM bridge</h3><p>Pixel data in and out of DICOM, with its own fuzz-testing gate.</p></div></div>
   </div>
-  <p class="note">We have measured 100on100 on 1,864 openly licensed CT, X-ray, MR and mammography images. The results will be published here after review, including where other codecs are smaller.</p>
+  <p class="note">We have measured 100on100 on openly licensed CT, X-ray, MR and mammography images. The results will be published here after review, including where other codecs are smaller.</p>
 </div></section>
 {DEMO}""")
 
@@ -620,7 +633,7 @@ page("products.html", "100on100 Products",
   <div class="cards">
     <div class="card">{img_art("aerial-tiles", "Aerial frame with its tile grid")}<div class="body"><span class="state ready">Ready</span><h3>Format version 4</h3><p>256 × 256 tiles, a header checksum, a declared bit depth up to 16, and a checksum on every tile.</p></div></div>
     <div class="card"><div class="art">{art_refuse()}</div><div class="body"><span class="state ready">Ready</span><h3>The decoder</h3><p>27,272 octets: the whole RISC-V decoder image, code and data (stack reserved, not stored), reading versions 1 to 4, under a hard cap of 98,304.</p></div></div>
-    <div class="card"><div class="art">{art_sdk()}</div><div class="body"><span class="state ready">Ready</span><h3>The C99 decoder</h3><p>No dependencies. Byte-identical to the reference on 3,442 of 3,442 files and mutants.</p></div></div>
+    <div class="card"><div class="art">{art_sdk()}</div><div class="body"><span class="state ready">Ready</span><h3>The C99 decoder</h3><p>No dependencies. Byte-identical to the reference on 3,488 of 3,488 files.</p></div></div>
   </div>
 </div></section>
 {DEMO}""")
@@ -683,11 +696,11 @@ page("downloads.html", "100on100 Downloads",
      "Documents about 100on100: evidence, technical brief, format specification.",
      pagehead("Downloads", "Documents", "Technical documents for your team. Items marked “on request” are sent after a briefing.") + """
 <section aria-label="Documents"><div class="wrap"><div class="dl-list">
-  <div><div><h3>Decoder binaries</h3><p>Linux, macOS and WebAssembly builds of the decoder, free for evaluation. The first release is pending verification.</p></div><a class="btn ghost" href="https://github.com/100on100/releases">Releases</a></div>
+  <div><div><h3>Decoder binaries</h3><p>Linux, macOS and WebAssembly builds of the decoder, free for evaluation under the evaluation licence (a draft, to be replaced after counsel review). Checksums are published with each release.</p></div><a class="btn ghost" href="https://github.com/100on100/releases">Releases</a></div>
   <div><div><h3>Evidence summary</h3><p>Every measured claim with its source.</p></div><a class="btn ghost" href="evidence.html">Read online</a></div>
   <div><div><h3>Technical brief</h3><p>How the decoder works, its refusal codes, and its test regime.</p></div><a class="btn ghost" href="company.html#contact">On request</a></div>
   <div><div><h3>Format specification (version 4)</h3><p>The file format and its refusal codes. Under NDA.</p></div><a class="btn ghost" href="company.html#contact">On request</a></div>
-  <div><div><h3>Medical imaging measurements</h3><p>Results on 1,864 openly licensed CT, X-ray, MR and mammography images.</p></div><span class="state later">After review</span></div>
+  <div><div><h3>Medical imaging measurements</h3><p>Results on openly licensed CT, X-ray, MR and mammography images.</p></div><span class="state later">After review</span></div>
 </div></div></section>""")
 
 # ------------------------------------------------------------------ company
@@ -701,7 +714,7 @@ page("company.html", "100on100 Company",
   <div class="cards">
     <div class="card"><div class="art">{art_hashes()}</div><div class="body"><h3>Measured before stated</h3><p>No figure goes on this site without the measurement and the section that records it.</p></div></div>
     <div class="card"><div class="art">{art_tiles()}</div><div class="body"><h3>Losses published</h3><p>When another codec is smaller or faster, the table says so.</p></div></div>
-    <div class="card"><div class="art">{art_sdk()}</div><div class="body"><h3>Open to inspection</h3><p>Binaries are free for evaluation and licensed for production. The decoder's source is available to evaluators for review.</p></div></div>
+    <div class="card"><div class="art">{art_sdk()}</div><div class="body"><h3>Binary evaluation</h3><p>Binaries are free for evaluation and licensed for production. No source is distributed; test records are available to evaluators under NDA.</p></div></div>
   </div>
 </div></section>
 
