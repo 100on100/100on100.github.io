@@ -385,33 +385,83 @@ STRIP = """<div class="strip">
 </div>
 <p class="cite" style="margin-top:10px">Details on the <a href="evidence.html">evidence page</a>. Test records are available to evaluators under NDA.</p>"""
 
-# ------------------------------------------------------------------ home (v2, 2026-10-07: business page; every figure from research/claims-register.md)
-STRIP_HOME = """<div class="strip">
-  <div><span class="fig num">0 of 9,600</span><p>damaged files decoded wrong or went undetected. Every one was decoded exactly or refused by number</p></div>
+# ------------------------------------------------------------------ home (v3, 2026-10-09: performance first, then integrity, then other benefits; every figure from research/claims-register.md)
+STRIP_PERF = """<div class="strip">
+  <div><span class="fig num">10.01%</span><p>smaller than JPEG-LS on 67 raw camera sensors (pooled, untiled files); 4.81% smaller than FFV1</p></div>
+  <div><span class="fig num">0.82%</span><p>larger than JPEG XL on the same sensors: we publish where others are ahead</p></div>
   <div><span class="fig num">9,075</span><p>octets: the whole C99 decoder library, with no allocation and no global state</p></div>
-  <div><span class="fig num">27,272</span><p>octets: the whole RISC-V decoder image, code and data (stack and heap reserved, not stored)</p></div>
-  <div><span class="fig num">29.7 M</span><p>fuzzed inputs under AddressSanitizer and UBSan: 0 issues</p></div>
+  <div><span class="fig num">256 × 256</span><p>tiles: decode a region alone, with every tile decoded alone equal to the whole decode</p></div>
+</div>"""
+
+STRIP_SEC = """<div class="strip">
+  <div><span class="fig num">0 of 9,600</span><p>damaged files decoded wrong or went undetected. Every one was decoded exactly or refused by number</p></div>
+  <div><span class="fig num">29.7 M</span><p>fuzzed inputs under AddressSanitizer and UBSan, with determinism and tile-consistency oracles: 0 issues</p></div>
+  <div><span class="fig num">284 / 284</span><p>corpus files where the C99 decoder library equals the reference decoder octet for octet (97 of 97 test vectors too)</p></div>
+  <div><span class="fig num">9,600</span><p>damaged files per codec, 48,000 in all: one bit flipped, 4 octets overwritten, 16 octets zeroed, cut short</p></div>
 </div>
 <p class="cite" style="margin-top:10px">Details on the <a href="evidence.html">evidence page</a>. Test records are available to evaluators under NDA.</p>"""
 
 page("index.html", "100on100",
-     "Lossless imaging with a decoder small enough to audit: damaged files are decoded exactly or refused by number.",
+     "Lossless raw imaging: files smaller than JPEG-LS and FFV1, a 9,075-octet decoder library, and damaged files decoded exactly or refused by number.",
      f"""<div class="heroband photo" style="--img:url(img/hero-aerial.jpg)"><div class="wrap">
   <div>
-    <p class="label">Lossless imaging · auditable decoder</p>
-    <h1 style="margin-top:14px">Raw images kept exactly. Damaged files never passed off as good.</h1>
-    <p class="lead">100on100 stores raw sensor images without losing a bit, in a decoder small enough for your own engineers to read. In our test of 9,600 damaged files, none was decoded wrong or went undetected: each was decoded exactly or refused with a numbered reason.</p>
+    <p class="label">Lossless raw imaging</p>
+    <h1 style="margin-top:14px">Raw images kept exactly, in smaller files, with a decoder small enough to read.</h1>
+    <p class="lead">On 67 raw camera sensors, 100on100 files are smaller than JPEG-LS and FFV1 and slightly larger than JPEG XL. The whole C99 decoder library is 9,075 octets, and a region of a frame decodes on its own. Every damaged file in our test was decoded exactly or refused with a numbered reason.</p>
     <div class="ctas"><a class="btn primary" href="company.html#contact">Request a briefing</a><a class="btn light" href="evidence.html">See the evidence</a></div>
   </div>
   {shot("mosaic-zoom", "Magnified raw sensor samples, each in its red, green or blue filter colour", "What a sensor actually stores: 16 × 24 raw samples, one colour each, magnified. 100on100 keeps every one.")}
 </div></div>
 
-<section aria-labelledby="proof-h"><div class="wrap">
-  <div class="head"><p class="label">True today</p><h2 id="proof-h">Measured, not claimed</h2><p>Every figure comes from our own test records and can be checked by your engineers.</p></div>
-  {STRIP_HOME}
+<section aria-labelledby="perf-h"><div class="wrap">
+  <div class="head"><p class="label">1 · Performance</p><h2 id="perf-h">Smaller files. A decoder that fits anywhere you can read it.</h2><p>Every figure comes from our own test records and can be checked by your engineers. Every raw sensor sample is kept, bit for bit, before demosaicing.</p></div>
+  {STRIP_PERF}
 </div></section>
 
-<section class="alt" aria-labelledby="who-h"><div class="wrap">
+<div class="wrap" style="padding-block:48px 8px">{part("size.html")}</div>
+
+<section class="alt" aria-labelledby="foot-h"><div class="wrap">
+  <div class="head"><p class="label">Footprint and regions</p><h2 id="foot-h">Small to ship, and a region at a time</h2>
+    <p>Decoder code and data, measured the same way for each codec. 256 × 256 tiles, each with its own checksum: decode a region alone, and tiles decoded alone equal the whole decode. We publish where others are smaller, too.</p></div>
+  <figure class="ops">{chart_size()}<figcaption><strong>9,075 octets: 79× smaller than JPEG XL, 19× smaller than JPEG 2000, 9× smaller than JPEG-LS.</strong> CCSDS 121 is smaller still at 6,435 octets: a simpler coder, which 100on100 out-compresses.</figcaption></figure>
+</div></section>
+
+<section aria-labelledby="v5-h"><div class="wrap">
+  <div class="head"><p class="label">Colour pictures · format version 5</p><h2 id="v5-h">The colour decoder, and where it stands</h2>
+    <p>For colour pictures the format is locked and a reference decoder is built. This release includes a decoder for colour pictures.</p></div>
+  <div class="cards">
+    <div class="card"><div class="body"><h3>Footprint</h3><p>35,344 octets: the whole RISC-V decoder image, code and data (stack and heap reserved, not stored). The C99 library is 8,167 octets of code and data (x86-64, built -Os with function sections, linked with --gc-sections, minus a no-codec baseline).</p></div></div>
+    <div class="card"><div class="body"><h3>Density</h3><p>Pooled bits per sample, version 5 colour coder: 3.5913 on 120 COCO pictures (8-bit), 3.5131 on 35 CC0 camera pictures (8-bit sRGB), 9.2552 on the same 35 pictures (16-bit linear), 2.6962 on 120 Wikimedia Commons pictures (8-bit); every file decoded exactly by the C library.</p></div></div>
+    <div class="card"><div class="body"><h3>Among small decoders</h3><p>Among coders whose decoder is at most 98,304 octets, the version 5 colour coder is the smallest in size on COCO-120, the CC0 cameras and Commons-120. Against JPEG-LS (CharLS, whole picture) its files are smaller by 21.0% / 6.2% / 9.9% on COCO / cameras 8-bit / cameras 16-bit and by 20.8% on Commons.</p></div></div>
+  </div>
+  <p class="note"><strong>Where others are ahead:</strong> JPEG XL (effort 9) produces smaller files than the version 5 colour coder: by 9.5% on COCO-120, 7.9% on the CC0 cameras (8-bit sRGB), 1.6% (16-bit linear) and 20.9% on Commons-120. JPEG XL's decoder is 713,139 octets and does not meet the 98,304 cap. Commons-120 is a quality-filtered pool (selection bias). Decoder sizes are x86-64 builds, not RISC-V.</p>
+</div></section>
+
+<section class="alt" aria-labelledby="sec-h"><div class="wrap">
+  <div class="head"><p class="label">2 · Security and integrity</p><h2 id="sec-h">Damaged files are never passed off as good</h2><p>In our test sets, every damaged or hostile file was either decoded exactly or refused with a numbered reason. The original decoder (format version 4) was tested against four standard lossless codecs, damaging the same files the same ways for each.</p></div>
+  {STRIP_SEC}
+  <figure class="ops" style="margin-top:22px">{chart_damage()}<figcaption><strong>0 of 9,600 damaged files produced undetected corruption: every one was refused.</strong> JPEG XL 0.3%, JPEG-LS 9.3%, CCSDS 121 47%, JPEG 2000 75% decoded to a wrong image and reported success.</figcaption></figure>
+  <p class="note">{FAIR}</p>
+  <p class="cite">{METHOD} <a href="evidence.html#h2h-h">Full results</a>.</p>
+</div></section>
+
+<section aria-labelledby="why-h"><div class="wrap">
+  <div class="head"><p class="label">Why now</p><h2 id="why-h">Image decoders are being exploited in the wild</h2><p>An image arrives from outside, and the decoder is the first code that touches it. Both of these are in the US government's catalogue of exploited vulnerabilities.</p></div>
+  {part("cves.html")}
+  <div class="prose" style="margin-top:22px"><p class="label">What the test covers</p>
+  <p>Our damaged-file test covers one bit flipped, 4 octets overwritten, 16 octets zeroed and truncation, on 24 camera crops. It does not cover larger images or every kind of damage, and we make no claim beyond the figures on this page.</p></div>
+</div></section>
+
+<section class="alt" aria-labelledby="more-h"><div class="wrap">
+  <div class="head"><p class="label">3 · More benefits</p><h2 id="more-h">The same result on every machine, and a decoder you can review</h2></div>
+  <div class="cards">
+    <div class="card"><div class="art">{art_hashes()}</div><div class="body"><h3>One result on every machine</h3><p>Integer-only decoding; a test stream decodes identically on x86-64, ARM, RISC-V and WebAssembly.</p></div></div>
+    <div class="card"><div class="art">{art_sdk()}</div><div class="body"><h3>A decoder your team can review</h3><p>27,272 octets: the whole RISC-V decoder image, code and data (stack and heap reserved, not stored), under a hard cap of 98,304.</p></div></div>
+    <div class="card">{img_art("aerial-tiles", "Aerial frame with its tile grid, one tile highlighted")}<div class="body"><h3>Damage stays local</h3><p>A damaged tile is refused while the others decode, so one bad region does not cost the frame.</p></div></div>
+  </div>
+</div></section>
+
+<section aria-labelledby="who-h"><div class="wrap">
   <div class="head"><p class="label">Solutions</p><h2 id="who-h">Where an exact image matters</h2></div>
   <div class="cards two">
     <a class="card" href="defence.html">{img_art("aerial-tiles", "Aerial drone frame with a 256 by 256 tile grid, one tile highlighted")}<div class="body"><span class="state ready">Available to pilot</span><h3>Defence and edge sensing</h3><p>Raw sensor frames kept exactly, moved over narrow links and decoded on any machine, with a damaged tile refused while the others still decode.</p><span class="more">More →</span></div></a>
@@ -421,38 +471,13 @@ page("index.html", "100on100",
   </div>
 </div></section>
 
-{head2head("Decoder size and damaged-file behaviour, measured against four standard lossless codecs the same way for each. We publish where others are smaller, too.")}
-
-<section class="alt" aria-labelledby="where-h"><div class="wrap">
-  <div class="head"><p class="label">Stated plainly</p><h2 id="where-h">Where others are ahead</h2></div>
-  <div class="tablewrap"><table class="data">
-    <thead><tr><th>Measure</th><th>Result</th></tr></thead>
-    <tbody>
-      <tr><td>Decoder size</td><td>CCSDS 121 (libaec) is smaller at 6,435 octets. 100on100 is 9,075.</td></tr>
-      <tr><td>File size, 67 raw camera sensors (tiled files)</td><td>About 9.8% smaller than JPEG-LS and 4.5% smaller than FFV1, and about 1.1% larger than JPEG XL.</td></tr>
-      <tr><td>Sensors measured</td><td>67 cameras, one raw file per model, CC0 (raw.pixls.us). Every file decoded back and compared bit for bit.</td></tr>
-    </tbody>
-  </table></div>
-</div></section>
-
-<section aria-labelledby="buy-h"><div class="wrap">
+<section class="alt" aria-labelledby="buy-h"><div class="wrap">
   <div class="head"><p class="label">Working with us</p><h2 id="buy-h">Start with your own data</h2></div>
   <div class="cards">
     <div class="card"><div class="body"><h3>1. Briefing</h3><p>Thirty minutes: the risk 100on100 removes, the evidence your engineers can check, and what is ready today versus planned.</p></div></div>
-    <div class="card"><div class="body"><h3>2. Evaluation</h3><p>Compiled decoder binaries for Linux, macOS and WebAssembly are free for evaluation, with checksums on the releases page. Test records are available under NDA.</p></div></div>
+    <div class="card"><div class="body"><h3>2. Evaluation</h3><p>Compiled decoder binaries for Linux, macOS, Windows and WebAssembly are free for evaluation, with checksums on the releases page. Test records are available under NDA.</p></div></div>
     <div class="card"><div class="body"><h3>3. Pilot, then licence</h3><p>A pilot on your own frames, with the refusal test run on your data. Production use is licensed under a commercial licence, and 100on100 is distributed as compiled binaries.</p></div></div>
   </div>
-</div></section>
-
-<section class="alt" aria-labelledby="why-h"><div class="wrap">
-  <div class="head"><p class="label">Why now</p><h2 id="why-h">Image decoders are being exploited in the wild</h2><p>An image arrives from outside, and the decoder is the first code that touches it. Both of these are in the US government's catalogue of exploited vulnerabilities.</p></div>
-  {part("cves.html")}
-</div></section>
-
-<section aria-labelledby="lim-h"><div class="wrap prose">
-  <p class="label">Limits</p>
-  <h2 id="lim-h" style="font-size:1.3rem">What the test covers</h2>
-  <p>Our damaged-file test covers one bit flipped, 4 octets overwritten, 16 octets zeroed and truncation, on 24 camera crops. It does not cover larger images or every kind of damage, and we make no claim beyond the figures on this page.</p>
 </div></section>
 
 {DEMO}""")
