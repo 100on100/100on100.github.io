@@ -231,7 +231,7 @@ OPS_SPACE = art_ops([("sat", "On orbit", "raw samples, tiled,", "each with a che
 OPS_MED = art_ops([("scanner", "Modality", "writes the study", "losslessly", "var(--rule)"),
                    ("rack", "Archive", "keeps it for decades,", "decoder alongside", "var(--rule)"),
                    ("screens", "Viewers", "the same pixels, or", "a numbered refusal", "var(--refuse)")],
-                  "hospital network", "Version 1.2.0 includes a decoder for generic planes, unsigned or signed, 1 to 16 bits; medical results are not yet published.",
+                  "hospital network", "Version 1.2.0 includes a decoder for single-channel and multi-plane images (greyscale, unsigned or signed, 1 to 16 bits); medical results are not yet published.",
                   "Medical flow: modality, archive, viewers showing identical pixels or a numbered refusal")
 
 
@@ -344,7 +344,7 @@ def page(fname, title, desc, body):
     <div><h4>Evidence</h4><ul><li><a href="evidence.html">Measurements</a></li><li><a href="evidence.html#compression">Compression</a></li><li><a href="downloads.html">Downloads</a></li></ul></div>
     <div><h4>Company</h4><ul><li><a href="company.html">About</a></li><li><a href="company.html#contact">Contact</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="legal.html">Legal notice</a></li></ul></div>
   </div>
-  <div class="base"><span>© 2026 100on100 · Columbus, Ohio, USA</span><span>Binaries free for evaluation; production use licensed · no cookies, no analytics, nothing loaded from other servers</span></div>
+  <div class="base"><span>© 2026 परमतत्व · 100on100 · Columbus, Ohio, USA</span><span>Binaries free for evaluation; production use licensed · no cookies, no analytics, nothing loaded from other servers</span></div>
 </div></footer>
 </body>
 </html>
@@ -554,7 +554,7 @@ page("space.html", "100on100 for Space",
   <div class="cards">
     <div class="card"><div class="art">{art_tiles()}</div><div class="body"><span class="state ready">Ready</span><h3>Format and decoder</h3><p>Format version 4 with tiles and checksums; a 27,272-octet complete decoder image, code and data (stack and heap reserved, not stored); a 9,075-octet C99 decoder matching the reference byte for byte.</p></div></div>
     <div class="card"><div class="art">{art_sdk()}</div><div class="body"><span class="state prog">In development</span><h3>An encoder for the payload</h3><p>On board, the encoder is what flies. A C99 encoder is next, then an FPGA or RISC-V soft-core encoder with measured power and area.</p></div></div>
-    <div class="card"><div class="art">{art_mosaic()}</div><div class="body"><span class="state ready">Colour decoder released</span><h3>Colour pictures first, then beyond colour cameras</h3><p>For colour pictures the format is locked and a reference decoder is built. This release includes a decoder for colour pictures. Version 1.2.0 includes a decoder for generic planes (format version 5, kind 0): 1 to 255 separate planes of 1 to 16 bits, unsigned or signed, or the four phases of a raw sensor mosaic as one array. The format is locked.</p></div></div>
+    <div class="card"><div class="art">{art_mosaic()}</div><div class="body"><span class="state ready">Colour decoder released</span><h3>Colour pictures first, then beyond colour cameras</h3><p>For colour pictures the format is locked and a reference decoder is built. This release includes a decoder for colour pictures. Version 1.2.0 includes a decoder for single-channel and multi-plane images (greyscale, unsigned or signed, 1 to 16 bits): 1 to 255 separate planes, or the four phases of a raw sensor mosaic as one array. The format is locked.</p></div></div>
   </div>
   <p class="note"><strong>Measured on open Landsat 8, Sentinel-2 and AVIRIS data, with the inter-band prediction planned for format version 5:</strong> level with CCSDS 123 on multispectral (Sentinel-2 −0.1%, Landsat +1.4%, pooled); about 12–13% behind on hyperspectral (stateless). Each tile decodes from its own stream and the tiles at the same position in at most two declared reference planes; no adaptive state. A damaged tile also blocks the tiles at the same position in the planes that reference it: one column of planes, not the file. Coded band by band, as today, 100on100 is smaller than the CCSDS 121 lossless standard on multispectral data.</p>
 </div></section>
@@ -562,9 +562,9 @@ page("space.html", "100on100 for Space",
 
 # ------------------------------------------------------------------ medical
 page("medical.html", "100on100 for Medical Devices",
-     "An auditable, refusing image decoder for makers of medical imaging devices and software. In development; version 1.2.0 includes a decoder for generic planes (format version 5, kind 0), unsigned or signed.",
+     "An auditable, refusing image decoder for makers of medical imaging devices and software. In development; version 1.2.0 includes a decoder for single-channel and multi-plane images (greyscale, unsigned or signed, 1 to 16 bits).",
      pagehead("Solutions / Medical devices", "The decoder inside your device should refuse, not guess",
-              "For CEOs, CTOs and heads of engineering at makers of imaging devices and imaging software: modalities, PACS and archives.", "banner-medical") + plain("medical", "Version 1.2.0 includes a decoder for generic planes, unsigned or signed, 1 to 16 bits; medical results are not yet published, and the points above describe how the format works.") +
+              "For CEOs, CTOs and heads of engineering at makers of imaging devices and imaging software: modalities, PACS and archives.", "banner-medical") + plain("medical", "Version 1.2.0 includes a decoder for single-channel and multi-plane images (greyscale, unsigned or signed, 1 to 16 bits); medical results are not yet published, and the points above describe how the format works.") +
      f"""
 <section aria-labelledby="m-see"><div class="wrap">
   <div class="head"><p class="label">How it would work in your product</p><h2 id="m-see">One study, cut into tiles, each one checked</h2>
@@ -577,7 +577,7 @@ page("medical.html", "100on100 for Medical Devices",
         <li><strong>The same everywhere:</strong> whole-number decoding leaves no rounding for two workstations to disagree on.</li>
         <li><strong>Honest about damage:</strong> a broken tile is a refusal with a number your service team can look up.</li>
       </ul>
-      <p class="note">Version 1.2.0 includes a decoder for generic planes (format version 5, kind 0), unsigned or signed; medical results are not yet published. The phantom is generated; no patient data appears on this site.</p>
+      <p class="note">Version 1.2.0 includes a decoder for single-channel and multi-plane images (greyscale, unsigned or signed, 1 to 16 bits); medical results are not yet published. The phantom is generated; no patient data appears on this site.</p>
     </div>
   </div>
   <figure class="ops" style="margin-top:28px">{OPS_MED}<figcaption>Where the decoder sits: from the modality, through the archive, to every viewer.</figcaption></figure>
@@ -602,7 +602,7 @@ page("medical.html", "100on100 for Medical Devices",
   <div class="head"><p class="label">Roadmap</p><h2 id="m-status">Where it stands</h2><p>The decoder, its refusal codes and its C99 version are ready today. Medical images need one more step: the DICOM bridge.</p></div>
   <div class="cards">
     <div class="card"><div class="art">{art_hashes()}</div><div class="body"><span class="state ready">Ready</span><h3>Refusal and exactness</h3><p>Damaged files refused by number; one result across machines; byte-identical C99 decoder.</p></div></div>
-    <div class="card"><div class="art">{art_tiles()}</div><div class="body"><span class="state ready">Version 1.2.0</span><h3>Generic planes, signed or unsigned</h3><p>Single planes of 1 to 16 bits, unsigned or signed. The format is locked.</p></div></div>
+    <div class="card"><div class="art">{art_tiles()}</div><div class="body"><span class="state ready">Version 1.2.0</span><h3>Single-channel and multi-plane images, signed or unsigned</h3><p>Single planes of 1 to 16 bits, unsigned or signed. The format is locked.</p></div></div>
     <div class="card"><div class="art">{art_sdk()}</div><div class="body"><span class="state later">After version 5</span><h3>DICOM bridge</h3><p>Pixel data in and out of DICOM, with its own fuzz-testing gate.</p></div></div>
   </div>
   <p class="note">We have measured 100on100 on openly licensed CT, X-ray, MR and mammography images. The results will be published here after review, including where other codecs are smaller.</p>
@@ -649,7 +649,7 @@ page("products.html", "100on100 Products",
   <div class="opsrow">
     <figure class="ops">{OPS_FIELD}<figcaption><strong>Defence and edge sensing.</strong> Keep every raw frame at the edge, send what the link allows, and decode the region an analyst needs first.</figcaption></figure>
     <figure class="ops">{OPS_SPACE}<figcaption><strong>Space and Earth observation.</strong> Tiles with their own checksums come down the link; a damaged tile is set aside instead of being used as good data.</figcaption></figure>
-    <figure class="ops">{OPS_MED}<figcaption><strong>Medical devices.</strong> From scanner to archive to every viewer, one decoder and one answer, or a numbered refusal. Generic-plane decoder in version 1.2.0.</figcaption></figure>
+    <figure class="ops">{OPS_MED}<figcaption><strong>Medical devices.</strong> From scanner to archive to every viewer, one decoder and one answer, or a numbered refusal. Decoder for single-channel and multi-plane images in version 1.2.0.</figcaption></figure>
   </div>
 </div></section>
 
@@ -721,10 +721,10 @@ page("downloads.html", "100on100 Downloads",
      "Documents about 100on100: evidence, technical brief, format specification.",
      pagehead("Downloads", "Documents", "Technical documents for your team. Items marked “on request” are sent after a briefing.") + """
 <section aria-label="Documents"><div class="wrap"><div class="dl-list">
-  <div><div><h3>Decoder binaries, version 1.2.0</h3><p>Current release: Linux (x86-64, aarch64), macOS (Apple silicon and Intel, macOS 11 or later), Windows (arm64, x86-64) and WebAssembly builds, with C headers and static libraries. The small original builds remain the recommended choice where footprint matters. New in 1.2.0: fast builds of the original and colour decoders beside the small ones, and a decoder for generic planes (format version 5, kind 0). The colour decoder is also offered as a RISC-V reference image: 35,344 octets: the whole RISC-V decoder image, code and data (stack and heap reserved, not stored). On non-conforming files (a list plane with a bad index and an out-of-range value), the image reports 40 where the C decoders report 31. Free for evaluation under the evaluation licence (a draft, to be replaced after counsel review). Checksums are published with the release.</p></div><a class="btn ghost" href="https://github.com/100on100/releases/releases/tag/v1.2.0">Release 1.2.0</a></div>
+  <div><div><h3>Decoder binaries, version 1.2.0</h3><p>Current release: Linux (x86-64, aarch64), macOS (Apple silicon and Intel, macOS 11 or later), Windows (arm64, x86-64) and WebAssembly builds, with C headers and static libraries. The small original builds remain the recommended choice where footprint matters. New in 1.2.0: fast builds of the original and colour decoders beside the small ones, and a decoder for single-channel and multi-plane images (greyscale, unsigned or signed, 1 to 16 bits). The colour decoder is also offered as a RISC-V reference image: 35,344 octets: the whole RISC-V decoder image, code and data (stack and heap reserved, not stored). On non-conforming files (a list plane with a bad index and an out-of-range value), the image reports 40 where the C decoders report 31. Free for evaluation under the evaluation licence (a draft, to be replaced after counsel review). Checksums are published with the release.</p></div><a class="btn ghost" href="https://github.com/100on100/releases/releases/tag/v1.2.0">Release 1.2.0</a></div>
   <div><div><h3>Evidence summary</h3><p>Every measured claim with its source.</p></div><a class="btn ghost" href="evidence.html">Read online</a></div>
   <div><div><h3>Technical brief</h3><p>How the decoder works, its refusal codes, and its test regime.</p></div><a class="btn ghost" href="company.html#contact">On request</a></div>
-  <div><div><h3>Format specification (version 4)</h3><p>The file format and its refusal codes. Under NDA.</p></div><a class="btn ghost" href="company.html#contact">On request</a></div>
+  <div><div><h3>Format specification (version 5)</h3><p>The file format and its refusal codes. Under NDA.</p></div><a class="btn ghost" href="company.html#contact">On request</a></div>
   <div><div><h3>Medical imaging measurements</h3><p>Results on openly licensed CT, X-ray, MR and mammography images.</p></div><span class="state later">After review</span></div>
 </div></div></section>""")
 
