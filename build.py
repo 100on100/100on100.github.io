@@ -49,14 +49,14 @@ def art_tiles():
     return svg(270, 190, "".join(out), "A frame divided into tiles with one tile decoded")
 
 
-def art_hashes(fg="var(--ink)", soft="var(--ink-soft)", box="var(--ground)", stroke="var(--rule)"):
+def art_hashes(fg="var(--ink)", soft="var(--ink-soft)", box="var(--ground)", stroke="var(--rule)", val="var(--g)"):
     """One stream, four instruction sets, one result."""
     out = []
     for k, isa in enumerate(["x86-64", "ARM aarch64", "RISC-V RV64", "WebAssembly"]):
         y = 8 + k * 44
         out.append(f'<rect x="8" y="{y}" width="300" height="36" rx="3" style="fill:{box};stroke:{stroke}"/>')
         out.append(txt(20, y + 23, isa, 13, 700, fg))
-        out.append(txt(296, y + 23, "1267710892", 13, 700, "var(--g)", "end"))
+        out.append(txt(296, y + 23, "1267710892", 13, 700, val, "end"))
     out.append(txt(8, 196, "one test stream · four instruction sets · one result", 11, 500, soft))
     return svg(316, 204, "".join(out), "Four instruction sets decode one stream to the same value 1267710892")
 
@@ -109,7 +109,7 @@ DAMAGE = [("100on100", 9600, 0, 0), ("JPEG XL", 9569, 31, 0), ("JPEG-LS", 8032, 
 
 def chart_size():
     """Decoder code + data, octets, linear scale: the scale IS the message."""
-    W, L, R, top, bh, gap = 680, 190, 150, 14, 26, 14
+    W, L, R, top, bh, gap = 720, 236, 150, 14, 26, 14
     mx = max(v for _, v, _ in SIZES); out = []
     for k, (name, v, ours) in enumerate(SIZES):
         y = top + k * (bh + gap); w = max(3, (W - L - R) * v / mx)
@@ -240,7 +240,7 @@ OPS_MED = art_ops([("scanner", "Modality", "writes the study", "losslessly", "va
 # Sources, licences and the round-trip records are in NOTICE (filled from the decode manifest).
 OAM = "Imagery: International Organization for Migration (IOM), via OpenAerialMap, CC BY 4.0"
 PHANTOM = "Generated Shepp–Logan test phantom: no patient data"
-CREDIT = {"hero-coast": "SAT_CREDIT_1", "space-band": "SAT_CREDIT_2", "aerial-tiles": OAM, "aerial-plain": OAM, "phantom": PHANTOM}
+CREDIT = {"hero-coast": "Contains modified Copernicus Sentinel data 2026", "space-band": "Landsat 8 imagery courtesy of the U.S. Geological Survey (public domain)", "aerial-tiles": OAM, "aerial-plain": OAM, "phantom": PHANTOM}
 DECODED = " · decoded by 100on100, 0 samples differ"
 
 
@@ -364,7 +364,7 @@ def art_zoom():
             op = 0.55 + 0.45 * (((x * 7 + y * 13) % 10) / 10)
             out.append(f'<rect x="{236 + x * c}" y="{40 + y * c}" width="{c - 3}" height="{c - 3}" rx="2" style="fill:{col};opacity:{op:.2f}"/>')
     out.append(txt(14, 166, "whole frame", 11, 600, "var(--ink-soft)", "start", False))
-    out.append(txt(236, 166, "one number per site, each kept", 11, 600, "var(--ink-soft)", "start", False))
+    out.append(txt(236, 166, "one number per site", 11, 600, "var(--ink-soft)", "start", False))
     return svg(380, 176, "".join(out), "A frame, a magnified spot, and the raw red, green and blue samples the sensor stored there")
 
 
@@ -406,7 +406,7 @@ VID = "Video: our own animation of a recorded simulation run. " + OAM
 
 
 def video(k, label):
-    return (f'<video controls muted playsinline preload="none" poster="video/{k}.webp" width="1280" height="720" aria-label="{label}">'
+    return (f'<video controls muted playsinline preload="none" poster="video/{k}-poster.webp" width="1280" height="720" aria-label="{label}">'
             f'<source src="video/{k}.webm" type="video/webm"><source src="video/{k}.mp4" type="video/mp4">'
             f'<track kind="captions" src="video/{k}.vtt" srclang="en" label="English" default></video>')
 
@@ -438,7 +438,9 @@ def apps(keys, wide_first=False):
         cls, lab = STATUS[st]
         crd = f'<p class="credit">{cr}</p>' if cr else ""
         w = " wide" if wide_first and i == 0 else ""
-        out.append(f'<article class="app{w}"><div class="media">{media()}</div><div class="body"><span class="state {cls}">{lab}</span><h3>{h}</h3><p>{p}</p>{crd}</div></article>')
+        m = media()
+        kind = "vid" if "<video" in m else ("pic" if m.startswith("<img") else "svg")
+        out.append(f'<article class="app{w}"><div class="media {kind}">{m}</div><div class="body"><span class="state {cls}">{lab}</span><h3>{h}</h3><p>{p}</p>{crd}</div></article>')
     return f'<div class="apps">{"".join(out)}</div>'
 
 
@@ -560,7 +562,7 @@ DEMO = f"""<div class="demo"><div class="wrap">
     <p>We show 100on100 on your own data, at your site or in a remote session: the decoder, the refusals, the matching results, and where other codecs are smaller.</p>
     <a class="btn" href="company.html#contact">Request a briefing</a>
   </div>
-  <div class="art">{art_hashes(fg="var(--brand-ink)", soft="var(--brand-ink)", box="transparent", stroke="var(--brand-ink)")}</div>
+  <div class="art">{art_hashes(fg="#ffffff", soft="#dbeaff", box="rgba(255,255,255,.06)", stroke="rgba(255,255,255,.55)", val="#9ff0c4")}</div>
 </div></div>"""
 
 STRIP = """<div class="strip">
@@ -604,7 +606,7 @@ page("index.html", "100on100",
   {STRIP_PERF}
 </div></section>
 
-<div class="wrap" style="padding-block:48px 8px">{part("size.html")}</div>
+<div class="wrap" style="padding-block:0 8px">{part("size.html")}</div>
 
 <section class="alt" aria-labelledby="foot-h"><div class="wrap">
   <div class="head"><p class="label">Footprint and regions</p><h2 id="foot-h">Small to ship, and a region at a time</h2>
@@ -634,7 +636,7 @@ page("index.html", "100on100",
 
 <section aria-labelledby="apps-home"><div class="wrap">
   <div class="head"><p class="label">Applications</p><h2 id="apps-home">Where it goes next</h2><p>Each scenario carries its status: demonstrated in simulation, in development, or planned. Nothing is shown as shipped unless it is.</p></div>
-  {apps(['swarm', 'selfcorrect', 'downlink', 'collab', 'archive', 'medical'], True)}
+  {apps(['swarm', 'selfcorrect', 'downlink', 'collab', 'archive', 'medical'])}
 </div></section>
 
 <section class="alt" aria-labelledby="why-h"><div class="wrap">
@@ -657,7 +659,7 @@ page("index.html", "100on100",
   <div class="head"><p class="label">Solutions</p><h2 id="who-h">Where an exact image matters</h2></div>
   <div class="cards two">
     <a class="card" href="defence.html">{img_art("aerial-tiles", "Aerial drone frame with a 256 by 256 tile grid, one tile highlighted")}<div class="body"><span class="state ready">Available to pilot</span><h3>Defence and edge sensing</h3><p>Raw sensor frames kept exactly, moved over narrow links and decoded on any machine, with a damaged tile refused while the others still decode.</p><span class="more">More →</span></div></a>
-    <a class="card" href="space.html">{img_art("space-band", "Satellite view of the Earth's surface in natural colour")}<div class="body"><span class="state prog">Decoders released; payload encoder in development</span><h3>Space and Earth observation</h3><p>Raw samples kept exactly over narrow downlinks, with measured results against the space standards on open data.</p><span class="more">More →</span></div></a>
+    <a class="card" href="space.html">{img_art("space-band", "Landsat 8 view of the Nile delta, the Suez Canal and the Gulf of Suez in natural colour")}<div class="body"><span class="state prog">Decoders released; payload encoder in development</span><h3>Space and Earth observation</h3><p>Raw samples kept exactly over narrow downlinks, with measured results against the space standards on open data.</p><span class="more">More →</span></div></a>
     <a class="card" href="medical.html"><div class="art">{art_refuse()}</div><div class="body"><span class="state later">In development</span><h3>Medical devices</h3><p>A decoder inside your device that refuses a malformed study instead of showing a wrong image.</p><span class="more">More →</span></div></a>
     <a class="card" href="products.html#archive"><div class="art">{art_archive()}</div><div class="body"><span class="state later">Planned</span><h3>Long-term archives</h3><p>Files that carry their own decoder, so an image stored today can still be read when the software that wrote it is gone.</p><span class="more">More →</span></div></a>
   </div>
@@ -694,7 +696,7 @@ page("defence.html", "100on100 for Defence",
 
 <section aria-labelledby="apps-def"><div class="wrap">
   <div class="head"><p class="label">Applications</p><h2 id="apps-def">From the edge to the ground</h2><p>Status shown on each scenario.</p></div>
-  {apps(['swarm', 'selfcorrect', 'collab'])}
+  {apps(['swarm', 'selfcorrect', 'collab'], True)}
 </div></section>
 
 <section class="alt" aria-labelledby="d-offer"><div class="wrap">
@@ -983,7 +985,14 @@ page("legal.html", "100on100 Legal Notice",
   <p>The 100on100 software is distributed as compiled binaries under the 100on100 licence: free for evaluation, licensed for production use.</p>
   <p>Figures on this site are measurements from our test records. They are not warranties.</p>
   <h2 style="font-size:1.2rem;margin-top:12px">Image credits</h2>
-  <p>Every photograph on this site is rendered by us from a raw camera file published at raw.pixls.us under CC0 (public domain dedication). Cameras: Yuneec CGO3, FIMI X8SE, Autel Robotics XB015, Leaf AFi-II 12, Google Pixel 2 XL, Nikon 1 AW1, OnePlus A3003, and the 65-camera contact sheet. The diagrams are our own.</p>
+  <p>Every photograph on this site is open-licence imagery that we encoded and decoded with 100on100 and compared sample by sample (0 samples differ) before rendering it for display. Full sources, windows and licences are in the <a href="NOTICE.txt">NOTICE</a> file.</p>
+  <ul>
+    <li>Alps, Sentinel-2: contains modified Copernicus Sentinel data 2026.</li>
+    <li>Nile delta and Suez, Landsat 8: courtesy of the U.S. Geological Survey (public domain).</li>
+    <li>Aerial imagery and the scenes in the animations: International Organization for Migration (IOM), via OpenAerialMap, CC BY 4.0 (<a href="https://creativecommons.org/licenses/by/4.0/">licence</a>); cropped, downsampled, and overlaid with tile grids.</li>
+    <li>CT test phantom: generated by us (Shepp–Logan); no patient data.</li>
+  </ul>
+  <p>The diagrams and animations are our own. Measurement corpora (raw.pixls.us camera files, CC0) are listed on the <a href="evidence.html">evidence page</a>.</p>
 </div></section>""")
 
 print("built", ["index.html"] + [n for n, _ in NAV] + ["services.html", "downloads.html", "privacy.html", "legal.html"])

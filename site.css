@@ -148,6 +148,8 @@ a.card:hover, .card:hover { transform: translateY(-3px); box-shadow: var(--shado
 .app .media { background: var(--night); aspect-ratio: 16 / 9; display: grid; place-items: center; }
 .app .media video, .app .media img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .app .media svg { width: 100%; height: 100%; }
+.app .media.svg { background: radial-gradient(120% 90% at 0% 0%, color-mix(in srgb, var(--brand) 9%, var(--panel)), var(--panel)); padding: 18px; }
+.app .media.pic img { object-fit: contain; }
 .app .body { padding: 22px 26px 26px; display: grid; gap: 10px; align-content: start; }
 .app .body p { color: var(--ink-soft); }
 .app.wide { grid-column: 1 / -1; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); grid-template-rows: auto; }
@@ -174,7 +176,8 @@ a.card:hover, .card:hover { transform: translateY(-3px); box-shadow: var(--shado
   background: radial-gradient(50% 90% at 90% 10%, rgba(57, 208, 255, 0.30), transparent 60%),
               radial-gradient(60% 100% at 10% 110%, rgba(20, 99, 214, 0.45), transparent 60%), linear-gradient(160deg, #071529, #0a2550); }
 .pagehead.photo::before { background: linear-gradient(95deg, rgba(4, 11, 24, 0.94) 0%, rgba(5, 14, 30, 0.75) 55%, rgba(5, 14, 30, 0.3) 100%), var(--img) center / cover no-repeat; }
-.pagehead .motif { position: absolute; inset: 0; z-index: -1; opacity: 0.55; pointer-events: none; }
+.pagehead .motif { position: absolute; inset: 0; z-index: -1; opacity: 0.5; pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 35%, #000 75%); mask-image: linear-gradient(90deg, transparent 0%, transparent 35%, #000 75%); }
 .pagehead .motif svg { width: 100%; height: 100%; }
 .pagehead .wrap { padding-block: 96px 72px; display: grid; gap: 16px; }
 .pagehead h1 { font-size: clamp(2rem, 1.3rem + 2.8vw, 3.4rem); max-width: 20em; color: #ffffff; letter-spacing: -0.03em; }
@@ -262,3 +265,10 @@ footer .base { border-top: 1px solid rgba(255, 255, 255, 0.12); padding-top: 18p
     @keyframes rise { from { opacity: 0; transform: translateY(28px) scale(0.985); } to { opacity: 1; transform: none; } }
   }
 }
+
+/* media boxes keep their aspect ratio whatever the picture's own size */
+.card .art.img, .app .media { position: relative; overflow: hidden; min-width: 0; }
+.card .art.img img, .app .media > img, .app .media > video { position: absolute; inset: 0; width: 100%; height: 100%; }
+.app .media.pic { background: #000000; }
+.app.wide .media { min-height: 320px; }
+.pagehead p.credit, .heroband p.credit { font-size: 0.72rem; }
