@@ -109,12 +109,12 @@ DAMAGE = [("100on100", 9600, 0, 0), ("JPEG XL", 9569, 31, 0), ("JPEG-LS", 8032, 
 
 def chart_size():
     """Decoder code + data, octets, linear scale: the scale IS the message."""
-    W, L, R, top, bh, gap = 720, 236, 150, 14, 26, 14
+    W, L, R, top, bh, gap = 860, 236, 160, 14, 26, 14
     mx = max(v for _, v, _ in SIZES); out = []
     for k, (name, v, ours) in enumerate(SIZES):
         y = top + k * (bh + gap); w = max(3, (W - L - R) * v / mx)
         fill = "var(--brand)" if ours else "var(--ink-soft)"
-        mult = "" if ours else (f"{v / 9075:.0f}× larger" if v > 9075 else "smaller, simpler coder")
+        mult = "" if ours else (f"{v / 9075:.0f}× larger" if v > 9075 else "smaller, simpler coder; no integrity check (47.4% of damaged files undetected)")
         out.append(txt(L - 10, y + 18, name, 13, 700 if ours else 500, "var(--ink)", "end", False))
         out.append(f'<rect x="{L}" y="{y}" width="{w:.1f}" height="{bh}" rx="2" style="fill:{fill};opacity:{1 if ours else .55}"/>')
         out.append(txt(L + w + 8, y + 18, f"{v:,}" + (f"  ·  {mult}" if mult else ""), 12, 700 if ours else 500, "var(--ink)", "start", False))
