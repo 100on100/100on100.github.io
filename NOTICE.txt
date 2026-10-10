@@ -1,7 +1,7 @@
 100on100 website: image and media notice
 
-Every photograph below is open-licence imagery. We encoded each source window with the 100on100 C99 encoder,
-decoded it with the 100on100 C99 decoder, and compared every sample with the source before rendering it for
+Every photograph below is open-licence imagery. We encoded each source window with our reference encoder (the product payload encoder is in development),
+decoded it with the 100on100 decoder, and compared every sample with the source before rendering it for
 display (8-bit stretch, resize, overlays). The diagrams and the animations are our own work.
 
 img/hero-coast.webp, img/hero-coast-sm.webp
